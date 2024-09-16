@@ -16,6 +16,7 @@
 		B3F2F76E2C98275C00BAB7BD /* RickAndMortyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F76D2C98275C00BAB7BD /* RickAndMortyTests.swift */; };
 		B3F2F7782C98275C00BAB7BD /* RickAndMortyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7772C98275C00BAB7BD /* RickAndMortyUITests.swift */; };
 		B3F2F77A2C98275C00BAB7BD /* RickAndMortyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7792C98275C00BAB7BD /* RickAndMortyUITestsLaunchTests.swift */; };
+		B3F2F7872C9835C400BAB7BD /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7862C9835C400BAB7BD /* Coordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		B3F2F7732C98275C00BAB7BD /* RickAndMortyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RickAndMortyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3F2F7772C98275C00BAB7BD /* RickAndMortyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RickAndMortyUITests.swift; sourceTree = "<group>"; };
 		B3F2F7792C98275C00BAB7BD /* RickAndMortyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RickAndMortyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B3F2F7862C9835C400BAB7BD /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				B3F2F75F2C98275C00BAB7BD /* Assets.xcassets */,
 				B3F2F7612C98275C00BAB7BD /* LaunchScreen.storyboard */,
 				B3F2F7642C98275C00BAB7BD /* Info.plist */,
+				B3F2F7862C9835C400BAB7BD /* Coordinator.swift */,
 			);
 			path = RickAndMorty;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3F2F7872C9835C400BAB7BD /* Coordinator.swift in Sources */,
 				B3F2F75B2C98275900BAB7BD /* ViewController.swift in Sources */,
 				B3F2F7572C98275900BAB7BD /* AppDelegate.swift in Sources */,
 				B3F2F7592C98275900BAB7BD /* SceneDelegate.swift in Sources */,
