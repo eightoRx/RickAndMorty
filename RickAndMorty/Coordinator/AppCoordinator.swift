@@ -9,25 +9,42 @@ import UIKit
 
 final class AppCoordinator: AppCoordinatorProtocol {
     
-    
-    var baseTabBarController: BaseTabBarController
     var coordinatorType: CoordinatorType { .app }
     var dependencies: IDependencies
     var coordinatorFinishDelegate: CoordinatorFinishDelegate?
-    var childCoordinator = [Coordinator]()
+    var childCoordinators = [Coordinator]()
+    var navigationController:  UINavigationController
     
-    init(_ baseTabBarController: BaseTabBarController, dependencies: IDependencies) {
-        self.baseTabBarController = baseTabBarController
+    init(_ navigationController: UINavigationController, dependencies: IDependencies) {
         self.dependencies = dependencies
+        self.navigationController = navigationController
     }
     
     func start() {
-        let episodeCoordinator = EpisodeCoordinator(dependencies: dependencies)
-        episodeCoordinator.start()
-        childCoordinator.append(episodeCoordinator)
-        
-        let favouriteCoordinator = FavouriteCoordinator(dependencies: dependencies)
-        favouriteCoordinator.start()
-        childCoordinator.append(favouriteCoordinator)
+        showLaunchScreen()
+    }
+    
+    private func showMainFlow() {
+        let tabBarCoordinator = TabBarCoordinator(navigationController, dependencies: dependencies)
+        tabBarCoordinator.start()
+        tabBarCoordinator.coordinatorFinishDelegate = self
+        childCoordinators.append(tabBarCoordinator)
+    }
+    
+    private func showLaunchScreen() {
+        let launchCoordinator = LaunchCoordinator(navigationController, dependencies: dependencies)
+        launchCoordinator.start()
+        launchCoordinator.coordinatorFinishDelegate = self
+        childCoordinators.append(launchCoordinator)
+    }
+}
+
+extension AppCoordinator: CoordinatorFinishDelegate {
+    func coordinatorFinishDelegate(childCoordinator: Coordinator) {
+        childCoordinators = childCoordinators.filter { $0.coordinatorType != childCoordinator.coordinatorType }
+        switch childCoordinator.coordinatorType {
+        case .launch: showMainFlow()
+        case .episode, .favourite, .app, .tabBar: break
+        }
     }
 }

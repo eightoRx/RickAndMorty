@@ -12,13 +12,15 @@ enum CoordinatorType {
     case episode
     case favourite
     case app
+    case tabBar
 }
 
 protocol Coordinator: AnyObject {
-    var dependencies: IDependencies {get}
-    var coordinatorFinishDelegate: CoordinatorFinishDelegate? {get}
-    var childCoordinator: [Coordinator] {get set}
-    var coordinatorType: CoordinatorType {get}
+    var dependencies: IDependencies { get }
+    var coordinatorFinishDelegate: CoordinatorFinishDelegate? { get }
+    var childCoordinators: [Coordinator] { get set }
+    var coordinatorType: CoordinatorType { get }
+    var navigationController: UINavigationController { get }
     
     func start()
     func finish()
@@ -26,7 +28,8 @@ protocol Coordinator: AnyObject {
 
 extension Coordinator {
     func finish() {
-        childCoordinator.removeAll()
+        childCoordinators.removeAll()
         coordinatorFinishDelegate?.coordinatorFinishDelegate(childCoordinator: self)
+        print(childCoordinators)
     }
 }

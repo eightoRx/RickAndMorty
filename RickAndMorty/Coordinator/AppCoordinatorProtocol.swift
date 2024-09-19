@@ -8,6 +8,5 @@
 import UIKit
 
 protocol AppCoordinatorProtocol: Coordinator {
-    var baseTabBarController: BaseTabBarController {get}
     func start()
 }

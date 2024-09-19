@@ -14,7 +14,7 @@
 		B3F2F76E2C98275C00BAB7BD /* RickAndMortyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F76D2C98275C00BAB7BD /* RickAndMortyTests.swift */; };
 		B3F2F7782C98275C00BAB7BD /* RickAndMortyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7772C98275C00BAB7BD /* RickAndMortyUITests.swift */; };
 		B3F2F77A2C98275C00BAB7BD /* RickAndMortyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7792C98275C00BAB7BD /* RickAndMortyUITestsLaunchTests.swift */; };
-		B3F2F7872C9835C400BAB7BD /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7862C9835C400BAB7BD /* Coordinator.swift */; };
+		B3F2F7872C9835C400BAB7BD /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7862C9835C400BAB7BD /* CoordinatorProtocol.swift */; };
 		B3F2F78B2C98379D00BAB7BD /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F78A2C98379D00BAB7BD /* Dependencies.swift */; };
 		B3F2F78D2C9837CE00BAB7BD /* ModulContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F78C2C9837CE00BAB7BD /* ModulContainer.swift */; };
 		B3F2F7942C9839DA00BAB7BD /* LaunchAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7932C9839DA00BAB7BD /* LaunchAssembly.swift */; };
@@ -32,9 +32,11 @@
 		B3F2F7AE2C983EFD00BAB7BD /* LaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7AD2C983EFD00BAB7BD /* LaunchCoordinator.swift */; };
 		B3F2F7B02C983F1700BAB7BD /* EpisodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7AF2C983F1700BAB7BD /* EpisodeCoordinator.swift */; };
 		B3F2F7B22C983F2600BAB7BD /* FavouriteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7B12C983F2600BAB7BD /* FavouriteCoordinator.swift */; };
-		B3F2F7B82C9860BE00BAB7BD /* CoordinatorFinishDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegate.swift */; };
-		B3F2F7BB2C98649D00BAB7BD /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7BA2C98649D00BAB7BD /* BaseTabBarController.swift */; };
+		B3F2F7B82C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift */; };
 		B3F2F7BD2C98726700BAB7BD /* AppCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7BC2C98726700BAB7BD /* AppCoordinatorProtocol.swift */; };
+		B3F2F7BF2C99814600BAB7BD /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7BE2C99814600BAB7BD /* BaseTabBarController.swift */; };
+		B3F30BAA2C9C2CBF004893F8 /* BaseTabBarAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BA92C9C2CBF004893F8 /* BaseTabBarAssembly.swift */; };
+		B3F30BAC2C9C3CB3004893F8 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BAB2C9C3CB3004893F8 /* TabBarCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +68,7 @@
 		B3F2F7732C98275C00BAB7BD /* RickAndMortyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RickAndMortyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3F2F7772C98275C00BAB7BD /* RickAndMortyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RickAndMortyUITests.swift; sourceTree = "<group>"; };
 		B3F2F7792C98275C00BAB7BD /* RickAndMortyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RickAndMortyUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		B3F2F7862C9835C400BAB7BD /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		B3F2F7862C9835C400BAB7BD /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		B3F2F78A2C98379D00BAB7BD /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		B3F2F78C2C9837CE00BAB7BD /* ModulContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulContainer.swift; sourceTree = "<group>"; };
 		B3F2F7932C9839DA00BAB7BD /* LaunchAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAssembly.swift; sourceTree = "<group>"; };
@@ -84,9 +86,11 @@
 		B3F2F7AD2C983EFD00BAB7BD /* LaunchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCoordinator.swift; sourceTree = "<group>"; };
 		B3F2F7AF2C983F1700BAB7BD /* EpisodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCoordinator.swift; sourceTree = "<group>"; };
 		B3F2F7B12C983F2600BAB7BD /* FavouriteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCoordinator.swift; sourceTree = "<group>"; };
-		B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorFinishDelegate.swift; sourceTree = "<group>"; };
-		B3F2F7BA2C98649D00BAB7BD /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
+		B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorFinishDelegateProtocol.swift; sourceTree = "<group>"; };
 		B3F2F7BC2C98726700BAB7BD /* AppCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		B3F2F7BE2C99814600BAB7BD /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
+		B3F30BA92C9C2CBF004893F8 /* BaseTabBarAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarAssembly.swift; sourceTree = "<group>"; };
+		B3F30BAB2C9C3CB3004893F8 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,10 +169,11 @@
 		B3F2F7882C9836D200BAB7BD /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				B3F2F7862C9835C400BAB7BD /* Coordinator.swift */,
-				B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegate.swift */,
+				B3F2F7862C9835C400BAB7BD /* CoordinatorProtocol.swift */,
+				B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift */,
 				B3F2F7BC2C98726700BAB7BD /* AppCoordinatorProtocol.swift */,
 				B3F2F7AB2C983EEF00BAB7BD /* AppCoordinator.swift */,
+				B3F30BAB2C9C3CB3004893F8 /* TabBarCoordinator.swift */,
 				B3F2F7AF2C983F1700BAB7BD /* EpisodeCoordinator.swift */,
 				B3F2F7B12C983F2600BAB7BD /* FavouriteCoordinator.swift */,
 				B3F2F7AD2C983EFD00BAB7BD /* LaunchCoordinator.swift */,
@@ -201,8 +206,8 @@
 			isa = PBXGroup;
 			children = (
 				B3F2F7B52C98404A00BAB7BD /* Base */,
-				B3F2F7932C9839DA00BAB7BD /* LaunchAssembly.swift */,
 				B3F2F7952C9839EA00BAB7BD /* LaunchViewController.swift */,
+				B3F2F7932C9839DA00BAB7BD /* LaunchAssembly.swift */,
 			);
 			path = Launch;
 			sourceTree = "<group>";
@@ -210,8 +215,8 @@
 		B3F2F7902C98396A00BAB7BD /* Episode */ = {
 			isa = PBXGroup;
 			children = (
-				B3F2F7972C983A0500BAB7BD /* EpisodeAssembly.swift */,
 				B3F2F7992C983A1900BAB7BD /* EpisodeViewController.swift */,
+				B3F2F7972C983A0500BAB7BD /* EpisodeAssembly.swift */,
 				B3F2F79B2C983A2A00BAB7BD /* EpisodeViewModel.swift */,
 				B3F2F79D2C983A4900BAB7BD /* EpisodeCell */,
 			);
@@ -221,9 +226,9 @@
 		B3F2F7912C98397600BAB7BD /* Favourite */ = {
 			isa = PBXGroup;
 			children = (
-				B3F2F79E2C983A8000BAB7BD /* FavouriteAssembly.swift */,
 				B3F2F7A02C983A9100BAB7BD /* FavouriteViewController.swift */,
 				B3F2F7A22C983A9F00BAB7BD /* FavouriteViewModel.swift */,
+				B3F2F79E2C983A8000BAB7BD /* FavouriteAssembly.swift */,
 			);
 			path = Favourite;
 			sourceTree = "<group>";
@@ -291,7 +296,8 @@
 		B3F2F7B92C98648700BAB7BD /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
-				B3F2F7BA2C98649D00BAB7BD /* BaseTabBarController.swift */,
+				B3F2F7BE2C99814600BAB7BD /* BaseTabBarController.swift */,
+				B3F30BA92C9C2CBF004893F8 /* BaseTabBarAssembly.swift */,
 			);
 			path = TabBarController;
 			sourceTree = "<group>";
@@ -427,23 +433,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3F2F7AE2C983EFD00BAB7BD /* LaunchCoordinator.swift in Sources */,
-				B3F2F7872C9835C400BAB7BD /* Coordinator.swift in Sources */,
+				B3F2F7872C9835C400BAB7BD /* CoordinatorProtocol.swift in Sources */,
 				B3F2F7A52C983ABB00BAB7BD /* CharacterDetailAssembly.swift in Sources */,
+				B3F30BAC2C9C3CB3004893F8 /* TabBarCoordinator.swift in Sources */,
 				B3F2F7572C98275900BAB7BD /* AppDelegate.swift in Sources */,
 				B3F2F79C2C983A2A00BAB7BD /* EpisodeViewModel.swift in Sources */,
 				B3F2F7BD2C98726700BAB7BD /* AppCoordinatorProtocol.swift in Sources */,
 				B3F2F7A72C983AED00BAB7BD /* CharacterDetailViewController.swift in Sources */,
-				B3F2F7BB2C98649D00BAB7BD /* BaseTabBarController.swift in Sources */,
 				B3F2F7AC2C983EEF00BAB7BD /* AppCoordinator.swift in Sources */,
 				B3F2F78D2C9837CE00BAB7BD /* ModulContainer.swift in Sources */,
 				B3F2F79A2C983A1900BAB7BD /* EpisodeViewController.swift in Sources */,
+				B3F30BAA2C9C2CBF004893F8 /* BaseTabBarAssembly.swift in Sources */,
 				B3F2F78B2C98379D00BAB7BD /* Dependencies.swift in Sources */,
 				B3F2F79F2C983A8000BAB7BD /* FavouriteAssembly.swift in Sources */,
-				B3F2F7B82C9860BE00BAB7BD /* CoordinatorFinishDelegate.swift in Sources */,
+				B3F2F7B82C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift in Sources */,
 				B3F2F7A32C983A9F00BAB7BD /* FavouriteViewModel.swift in Sources */,
 				B3F2F7A12C983A9100BAB7BD /* FavouriteViewController.swift in Sources */,
 				B3F2F7B22C983F2600BAB7BD /* FavouriteCoordinator.swift in Sources */,
 				B3F2F7942C9839DA00BAB7BD /* LaunchAssembly.swift in Sources */,
+				B3F2F7BF2C99814600BAB7BD /* BaseTabBarController.swift in Sources */,
 				B3F2F7A92C983AFF00BAB7BD /* CharacterDetailViewModel.swift in Sources */,
 				B3F2F7B02C983F1700BAB7BD /* EpisodeCoordinator.swift in Sources */,
 				B3F2F7592C98275900BAB7BD /* SceneDelegate.swift in Sources */,

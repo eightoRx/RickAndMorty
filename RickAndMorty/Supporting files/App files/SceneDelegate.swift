@@ -20,7 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func configureScene(_ windowScene: UIWindowScene) {
-        let rootCotroller = BaseTabBarController()
+        let rootCotroller = UINavigationController()
+        rootCotroller.setNavigationBarHidden(true, animated: false)
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = rootCotroller
         window?.makeKeyAndVisible()
@@ -28,4 +29,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         coordinator?.start()
     }
 }
-

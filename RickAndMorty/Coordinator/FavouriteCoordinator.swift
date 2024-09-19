@@ -13,17 +13,29 @@ class FavouriteCoordinator: Coordinator {
     var dependencies: IDependencies
     var navigationController = UINavigationController()
     var coordinatorFinishDelegate: CoordinatorFinishDelegate?
-    
-    var childCoordinator = [Coordinator]()
+    var childCoordinators = [Coordinator]()
     
     init(dependencies: IDependencies) {
         self.dependencies = dependencies
     }
     
     func start() {
-        navigationController.setViewControllers([
-            FavouriteAssembly.configure(dependencies)],
-            animated: false
-        )
+        showViewController()
+    }
+    
+   private func showViewController() {
+        let favouriteVC = FavouriteAssembly.configure(dependencies)
+        let detailCharacterVC = CharacterDetailAssembly.configure(dependencies)
+        guard let favouriteVC = favouriteVC as? FavouriteViewController else {return}
+        if let detailCharacterVC = detailCharacterVC as? CharacterDetailViewController {
+            
+            favouriteVC.detailHandler = { [weak self] event in
+                switch event {
+                case .moveToCharacterDetail:
+                    self?.navigationController.pushViewController(detailCharacterVC, animated: true)
+                }
+            }
+        }
+        navigationController.setViewControllers([favouriteVC], animated: false)
     }
 }

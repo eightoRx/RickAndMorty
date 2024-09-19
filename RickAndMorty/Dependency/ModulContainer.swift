@@ -12,9 +12,11 @@ protocol IModuleContainer {
     func getEpisodeController() -> UIViewController
     func getFavouriteController() -> UIViewController
     func getCharacterDetailController() -> UIViewController
+    func getBaseTabBarController() -> UITabBarController
 }
 
 final class ModulContainer: IModuleContainer {
+   
     private let dependecies: IDependencies
     
     required init(_ dependecies: IDependencies) {
@@ -22,10 +24,18 @@ final class ModulContainer: IModuleContainer {
     }
 }
 
-
+// MARK: - Launch
 extension ModulContainer {
     func getLaunchController() -> UIViewController {
         let vc = LaunchViewController()
+        return vc
+    }
+}
+
+// MARK: - Episodes
+extension ModulContainer {
+    func getEpisodeController() -> UIViewController {
+        let vc = EpisodeViewController()
         vc.title = "Episode Title"
         vc.tabBarItem = UITabBarItem(title: nil,
                                              image: UIImage(systemName: "house"),
@@ -34,15 +44,7 @@ extension ModulContainer {
     }
 }
 
-
-extension ModulContainer {
-    func getEpisodeController() -> UIViewController {
-        let vc = EpisodeViewController()
-        return vc
-    }
-}
-
-
+// MARK: - Favourites
 extension ModulContainer {
     func getFavouriteController() -> UIViewController {
         let vc = FavouriteViewController()
@@ -54,10 +56,18 @@ extension ModulContainer {
     }
 }
 
-
+// MARK: - CharacterDetails
 extension ModulContainer {
     func getCharacterDetailController() -> UIViewController {
         let vc = CharacterDetailViewController()
         return vc
+    }
+}
+
+// MARK: - TabBarController
+extension ModulContainer {
+    func getBaseTabBarController() -> UITabBarController {
+        let tabBar = BaseTabBarController()
+        return tabBar
     }
 }
