@@ -33,10 +33,44 @@
 		B3F2F7B02C983F1700BAB7BD /* EpisodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7AF2C983F1700BAB7BD /* EpisodeCoordinator.swift */; };
 		B3F2F7B22C983F2600BAB7BD /* FavouriteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7B12C983F2600BAB7BD /* FavouriteCoordinator.swift */; };
 		B3F2F7B82C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift */; };
-		B3F2F7BD2C98726700BAB7BD /* AppCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7BC2C98726700BAB7BD /* AppCoordinatorProtocol.swift */; };
 		B3F2F7BF2C99814600BAB7BD /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F2F7BE2C99814600BAB7BD /* BaseTabBarController.swift */; };
 		B3F30BAA2C9C2CBF004893F8 /* BaseTabBarAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BA92C9C2CBF004893F8 /* BaseTabBarAssembly.swift */; };
 		B3F30BAC2C9C3CB3004893F8 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BAB2C9C3CB3004893F8 /* TabBarCoordinator.swift */; };
+		B3F30BAF2CA14FA0004893F8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BAE2CA14FA0004893F8 /* Constants.swift */; };
+		B3F30BB32CA1A2E3004893F8 /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BB22CA1A2E2004893F8 /* EpisodeCell.swift */; };
+		B3F30BB52CA1A701004893F8 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BB42CA1A701004893F8 /* UITableView+Extension.swift */; };
+		B3F30BB82CA1ACF1004893F8 /* CharacterDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BB72CA1ACF1004893F8 /* CharacterDetailCell.swift */; };
+		B3F30BBA2CA1ADD5004893F8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BB92CA1ADD5004893F8 /* String+Extension.swift */; };
+		B3F30BBC2CA29B63004893F8 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BBB2CA29B63004893F8 /* Theme.swift */; };
+		B3F30BBF2CA2A772004893F8 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BBE2CA2A772004893F8 /* Roboto-Medium.ttf */; };
+		B3F30BC02CA2A772004893F8 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BBE2CA2A772004893F8 /* Roboto-Medium.ttf */; };
+		B3F30BC12CA2A772004893F8 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BBE2CA2A772004893F8 /* Roboto-Medium.ttf */; };
+		B3F30BC32CA2ACBE004893F8 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BC22CA2ACBE004893F8 /* UIFont+Extension.swift */; };
+		B3F30BC42CA2ACBE004893F8 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BC22CA2ACBE004893F8 /* UIFont+Extension.swift */; };
+		B3F30BC52CA2ACBE004893F8 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BC22CA2ACBE004893F8 /* UIFont+Extension.swift */; };
+		B3F30BCB2CA43EC0004893F8 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BCA2CA43EC0004893F8 /* HeaderView.swift */; };
+		B3F30BCC2CA43EC0004893F8 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BCA2CA43EC0004893F8 /* HeaderView.swift */; };
+		B3F30BCD2CA43EC0004893F8 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BCA2CA43EC0004893F8 /* HeaderView.swift */; };
+		B3F30BCF2CA537E5004893F8 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BCE2CA537E5004893F8 /* UIView+Extension.swift */; };
+		B3F30BD02CA537E5004893F8 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BCE2CA537E5004893F8 /* UIView+Extension.swift */; };
+		B3F30BD12CA537E5004893F8 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BCE2CA537E5004893F8 /* UIView+Extension.swift */; };
+		B3F30BD32CA54BE8004893F8 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BD22CA54BE8004893F8 /* UIButton+Extension.swift */; };
+		B3F30BD42CA54BE8004893F8 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BD22CA54BE8004893F8 /* UIButton+Extension.swift */; };
+		B3F30BD52CA54BE8004893F8 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BD22CA54BE8004893F8 /* UIButton+Extension.swift */; };
+		B3F30BD72CA57C36004893F8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BD62CA57C36004893F8 /* Roboto-Regular.ttf */; };
+		B3F30BD82CA57C36004893F8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BD62CA57C36004893F8 /* Roboto-Regular.ttf */; };
+		B3F30BD92CA57C36004893F8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BD62CA57C36004893F8 /* Roboto-Regular.ttf */; };
+		B3F30BDB2CA57C61004893F8 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BDA2CA57C60004893F8 /* Roboto-Light.ttf */; };
+		B3F30BDC2CA57C61004893F8 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BDA2CA57C60004893F8 /* Roboto-Light.ttf */; };
+		B3F30BDD2CA57C61004893F8 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3F30BDA2CA57C60004893F8 /* Roboto-Light.ttf */; };
+		B3F30BE02CA6ABC5004893F8 /* CharacterDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BDF2CA6ABC5004893F8 /* CharacterDetailModel.swift */; };
+		B3F30BE12CA6ABC5004893F8 /* CharacterDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BDF2CA6ABC5004893F8 /* CharacterDetailModel.swift */; };
+		B3F30BE22CA6ABC5004893F8 /* CharacterDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BDF2CA6ABC5004893F8 /* CharacterDetailModel.swift */; };
+		B3F30BE42CA6B58C004893F8 /* CharacterDetailHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BE32CA6B58C004893F8 /* CharacterDetailHeaderLabel.swift */; };
+		B3F30BE62CA6B60A004893F8 /* CharacterDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BE52CA6B60A004893F8 /* CharacterDetailHeaderView.swift */; };
+		B3F30BE82CAC1AEB004893F8 /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BE72CAC1AEB004893F8 /* UINavigationController+Extension.swift */; };
+		B3F30BEB2CAD47E8004893F8 /* AlertsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BEA2CAD47E8004893F8 /* AlertsBuilder.swift */; };
+		B3F30BEE2CAD4950004893F8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F30BED2CAD4950004893F8 /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,10 +121,28 @@
 		B3F2F7AF2C983F1700BAB7BD /* EpisodeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCoordinator.swift; sourceTree = "<group>"; };
 		B3F2F7B12C983F2600BAB7BD /* FavouriteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCoordinator.swift; sourceTree = "<group>"; };
 		B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorFinishDelegateProtocol.swift; sourceTree = "<group>"; };
-		B3F2F7BC2C98726700BAB7BD /* AppCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		B3F2F7BE2C99814600BAB7BD /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
 		B3F30BA92C9C2CBF004893F8 /* BaseTabBarAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarAssembly.swift; sourceTree = "<group>"; };
 		B3F30BAB2C9C3CB3004893F8 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
+		B3F30BAE2CA14FA0004893F8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B3F30BB22CA1A2E2004893F8 /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
+		B3F30BB42CA1A701004893F8 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		B3F30BB72CA1ACF1004893F8 /* CharacterDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailCell.swift; sourceTree = "<group>"; };
+		B3F30BB92CA1ADD5004893F8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		B3F30BBB2CA29B63004893F8 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		B3F30BBE2CA2A772004893F8 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		B3F30BC22CA2ACBE004893F8 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
+		B3F30BCA2CA43EC0004893F8 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		B3F30BCE2CA537E5004893F8 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		B3F30BD22CA54BE8004893F8 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+		B3F30BD62CA57C36004893F8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		B3F30BDA2CA57C60004893F8 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		B3F30BDF2CA6ABC5004893F8 /* CharacterDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailModel.swift; sourceTree = "<group>"; };
+		B3F30BE32CA6B58C004893F8 /* CharacterDetailHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailHeaderLabel.swift; sourceTree = "<group>"; };
+		B3F30BE52CA6B60A004893F8 /* CharacterDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailHeaderView.swift; sourceTree = "<group>"; };
+		B3F30BE72CAC1AEB004893F8 /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
+		B3F30BEA2CAD47E8004893F8 /* AlertsBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsBuilder.swift; sourceTree = "<group>"; };
+		B3F30BED2CAD4950004893F8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,9 +193,12 @@
 		B3F2F7552C98275900BAB7BD /* RickAndMorty */ = {
 			isa = PBXGroup;
 			children = (
+				B3F30BDE2CA6ABAC004893F8 /* Model */,
 				B3F2F78E2C98395600BAB7BD /* Module */,
 				B3F2F7892C98372400BAB7BD /* Dependency */,
 				B3F2F7882C9836D200BAB7BD /* Coordinator */,
+				B3F30BAD2CA14F5D004893F8 /* Extension */,
+				B3F30BE92CAD47A0004893F8 /* Utility */,
 				B3F2F7B32C983F9800BAB7BD /* Supporting files */,
 			);
 			path = RickAndMorty;
@@ -171,7 +226,6 @@
 			children = (
 				B3F2F7862C9835C400BAB7BD /* CoordinatorProtocol.swift */,
 				B3F2F7B72C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift */,
-				B3F2F7BC2C98726700BAB7BD /* AppCoordinatorProtocol.swift */,
 				B3F2F7AB2C983EEF00BAB7BD /* AppCoordinator.swift */,
 				B3F30BAB2C9C3CB3004893F8 /* TabBarCoordinator.swift */,
 				B3F2F7AF2C983F1700BAB7BD /* EpisodeCoordinator.swift */,
@@ -218,7 +272,7 @@
 				B3F2F7992C983A1900BAB7BD /* EpisodeViewController.swift */,
 				B3F2F7972C983A0500BAB7BD /* EpisodeAssembly.swift */,
 				B3F2F79B2C983A2A00BAB7BD /* EpisodeViewModel.swift */,
-				B3F2F79D2C983A4900BAB7BD /* EpisodeCell */,
+				B3F2F79D2C983A4900BAB7BD /* EpisodeView */,
 			);
 			path = Episode;
 			sourceTree = "<group>";
@@ -236,26 +290,32 @@
 		B3F2F7922C98398300BAB7BD /* CharacterDetail */ = {
 			isa = PBXGroup;
 			children = (
-				B3F2F7A42C983ABB00BAB7BD /* CharacterDetailAssembly.swift */,
 				B3F2F7A62C983AED00BAB7BD /* CharacterDetailViewController.swift */,
+				B3F2F7A42C983ABB00BAB7BD /* CharacterDetailAssembly.swift */,
 				B3F2F7A82C983AFF00BAB7BD /* CharacterDetailViewModel.swift */,
-				B3F2F7AA2C983B0800BAB7BD /* CharacterDetailCell */,
+				B3F2F7AA2C983B0800BAB7BD /* CharacterDetailView */,
+				B3F30BEC2CAD4914004893F8 /* ImagePicker */,
 			);
 			path = CharacterDetail;
 			sourceTree = "<group>";
 		};
-		B3F2F79D2C983A4900BAB7BD /* EpisodeCell */ = {
+		B3F2F79D2C983A4900BAB7BD /* EpisodeView */ = {
 			isa = PBXGroup;
 			children = (
+				B3F30BB22CA1A2E2004893F8 /* EpisodeCell.swift */,
+				B3F30BCA2CA43EC0004893F8 /* HeaderView.swift */,
 			);
-			path = EpisodeCell;
+			path = EpisodeView;
 			sourceTree = "<group>";
 		};
-		B3F2F7AA2C983B0800BAB7BD /* CharacterDetailCell */ = {
+		B3F2F7AA2C983B0800BAB7BD /* CharacterDetailView */ = {
 			isa = PBXGroup;
 			children = (
+				B3F30BE52CA6B60A004893F8 /* CharacterDetailHeaderView.swift */,
+				B3F30BB72CA1ACF1004893F8 /* CharacterDetailCell.swift */,
+				B3F30BE32CA6B58C004893F8 /* CharacterDetailHeaderLabel.swift */,
 			);
-			path = CharacterDetailCell;
+			path = CharacterDetailView;
 			sourceTree = "<group>";
 		};
 		B3F2F7B32C983F9800BAB7BD /* Supporting files */ = {
@@ -270,6 +330,7 @@
 		B3F2F7B42C983FDE00BAB7BD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B3F30BBD2CA2A737004893F8 /* Font */,
 				B3F2F75F2C98275C00BAB7BD /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -300,6 +361,55 @@
 				B3F30BA92C9C2CBF004893F8 /* BaseTabBarAssembly.swift */,
 			);
 			path = TabBarController;
+			sourceTree = "<group>";
+		};
+		B3F30BAD2CA14F5D004893F8 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B3F30BBB2CA29B63004893F8 /* Theme.swift */,
+				B3F30BAE2CA14FA0004893F8 /* Constants.swift */,
+				B3F30BB42CA1A701004893F8 /* UITableView+Extension.swift */,
+				B3F30BB92CA1ADD5004893F8 /* String+Extension.swift */,
+				B3F30BC22CA2ACBE004893F8 /* UIFont+Extension.swift */,
+				B3F30BCE2CA537E5004893F8 /* UIView+Extension.swift */,
+				B3F30BD22CA54BE8004893F8 /* UIButton+Extension.swift */,
+				B3F30BE72CAC1AEB004893F8 /* UINavigationController+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		B3F30BBD2CA2A737004893F8 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				B3F30BDA2CA57C60004893F8 /* Roboto-Light.ttf */,
+				B3F30BD62CA57C36004893F8 /* Roboto-Regular.ttf */,
+				B3F30BBE2CA2A772004893F8 /* Roboto-Medium.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		B3F30BDE2CA6ABAC004893F8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B3F30BDF2CA6ABC5004893F8 /* CharacterDetailModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B3F30BE92CAD47A0004893F8 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				B3F30BEA2CAD47E8004893F8 /* AlertsBuilder.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		B3F30BEC2CAD4914004893F8 /* ImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				B3F30BED2CAD4950004893F8 /* ImagePicker.swift */,
+			);
+			path = ImagePicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -408,6 +518,9 @@
 			files = (
 				B3F2F7602C98275C00BAB7BD /* Assets.xcassets in Resources */,
 				B3F2F7632C98275C00BAB7BD /* Base in Resources */,
+				B3F30BDB2CA57C61004893F8 /* Roboto-Light.ttf in Resources */,
+				B3F30BD72CA57C36004893F8 /* Roboto-Regular.ttf in Resources */,
+				B3F30BBF2CA2A772004893F8 /* Roboto-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +528,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3F30BD82CA57C36004893F8 /* Roboto-Regular.ttf in Resources */,
+				B3F30BC02CA2A772004893F8 /* Roboto-Medium.ttf in Resources */,
+				B3F30BDC2CA57C61004893F8 /* Roboto-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +538,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3F30BD92CA57C36004893F8 /* Roboto-Regular.ttf in Resources */,
+				B3F30BC12CA2A772004893F8 /* Roboto-Medium.ttf in Resources */,
+				B3F30BDD2CA57C61004893F8 /* Roboto-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,30 +551,45 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3F30BEB2CAD47E8004893F8 /* AlertsBuilder.swift in Sources */,
 				B3F2F7AE2C983EFD00BAB7BD /* LaunchCoordinator.swift in Sources */,
 				B3F2F7872C9835C400BAB7BD /* CoordinatorProtocol.swift in Sources */,
+				B3F30BE42CA6B58C004893F8 /* CharacterDetailHeaderLabel.swift in Sources */,
 				B3F2F7A52C983ABB00BAB7BD /* CharacterDetailAssembly.swift in Sources */,
 				B3F30BAC2C9C3CB3004893F8 /* TabBarCoordinator.swift in Sources */,
+				B3F30BE82CAC1AEB004893F8 /* UINavigationController+Extension.swift in Sources */,
 				B3F2F7572C98275900BAB7BD /* AppDelegate.swift in Sources */,
 				B3F2F79C2C983A2A00BAB7BD /* EpisodeViewModel.swift in Sources */,
-				B3F2F7BD2C98726700BAB7BD /* AppCoordinatorProtocol.swift in Sources */,
+				B3F30BB52CA1A701004893F8 /* UITableView+Extension.swift in Sources */,
+				B3F30BBA2CA1ADD5004893F8 /* String+Extension.swift in Sources */,
+				B3F30BCF2CA537E5004893F8 /* UIView+Extension.swift in Sources */,
+				B3F30BE02CA6ABC5004893F8 /* CharacterDetailModel.swift in Sources */,
+				B3F30BAF2CA14FA0004893F8 /* Constants.swift in Sources */,
 				B3F2F7A72C983AED00BAB7BD /* CharacterDetailViewController.swift in Sources */,
 				B3F2F7AC2C983EEF00BAB7BD /* AppCoordinator.swift in Sources */,
+				B3F30BEE2CAD4950004893F8 /* ImagePicker.swift in Sources */,
+				B3F30BD32CA54BE8004893F8 /* UIButton+Extension.swift in Sources */,
 				B3F2F78D2C9837CE00BAB7BD /* ModulContainer.swift in Sources */,
 				B3F2F79A2C983A1900BAB7BD /* EpisodeViewController.swift in Sources */,
 				B3F30BAA2C9C2CBF004893F8 /* BaseTabBarAssembly.swift in Sources */,
+				B3F30BB82CA1ACF1004893F8 /* CharacterDetailCell.swift in Sources */,
 				B3F2F78B2C98379D00BAB7BD /* Dependencies.swift in Sources */,
 				B3F2F79F2C983A8000BAB7BD /* FavouriteAssembly.swift in Sources */,
 				B3F2F7B82C9860BE00BAB7BD /* CoordinatorFinishDelegateProtocol.swift in Sources */,
+				B3F30BCB2CA43EC0004893F8 /* HeaderView.swift in Sources */,
 				B3F2F7A32C983A9F00BAB7BD /* FavouriteViewModel.swift in Sources */,
 				B3F2F7A12C983A9100BAB7BD /* FavouriteViewController.swift in Sources */,
+				B3F30BC32CA2ACBE004893F8 /* UIFont+Extension.swift in Sources */,
 				B3F2F7B22C983F2600BAB7BD /* FavouriteCoordinator.swift in Sources */,
+				B3F30BE62CA6B60A004893F8 /* CharacterDetailHeaderView.swift in Sources */,
 				B3F2F7942C9839DA00BAB7BD /* LaunchAssembly.swift in Sources */,
 				B3F2F7BF2C99814600BAB7BD /* BaseTabBarController.swift in Sources */,
 				B3F2F7A92C983AFF00BAB7BD /* CharacterDetailViewModel.swift in Sources */,
+				B3F30BBC2CA29B63004893F8 /* Theme.swift in Sources */,
 				B3F2F7B02C983F1700BAB7BD /* EpisodeCoordinator.swift in Sources */,
 				B3F2F7592C98275900BAB7BD /* SceneDelegate.swift in Sources */,
 				B3F2F7982C983A0500BAB7BD /* EpisodeAssembly.swift in Sources */,
+				B3F30BB32CA1A2E3004893F8 /* EpisodeCell.swift in Sources */,
 				B3F2F7962C9839EA00BAB7BD /* LaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,7 +598,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3F30BC42CA2ACBE004893F8 /* UIFont+Extension.swift in Sources */,
 				B3F2F76E2C98275C00BAB7BD /* RickAndMortyTests.swift in Sources */,
+				B3F30BD02CA537E5004893F8 /* UIView+Extension.swift in Sources */,
+				B3F30BD42CA54BE8004893F8 /* UIButton+Extension.swift in Sources */,
+				B3F30BE12CA6ABC5004893F8 /* CharacterDetailModel.swift in Sources */,
+				B3F30BCC2CA43EC0004893F8 /* HeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,8 +611,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3F30BCD2CA43EC0004893F8 /* HeaderView.swift in Sources */,
+				B3F30BE22CA6ABC5004893F8 /* CharacterDetailModel.swift in Sources */,
+				B3F30BC52CA2ACBE004893F8 /* UIFont+Extension.swift in Sources */,
 				B3F2F7782C98275C00BAB7BD /* RickAndMortyUITests.swift in Sources */,
+				B3F30BD12CA537E5004893F8 /* UIView+Extension.swift in Sources */,
 				B3F2F77A2C98275C00BAB7BD /* RickAndMortyUITestsLaunchTests.swift in Sources */,
+				B3F30BD52CA54BE8004893F8 /* UIButton+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +774,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3V8RBZ7KL8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "RickAndMorty/Supporting files/App files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -661,6 +806,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3V8RBZ7KL8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "RickAndMorty/Supporting files/App files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

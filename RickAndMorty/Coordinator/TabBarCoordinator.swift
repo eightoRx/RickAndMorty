@@ -35,6 +35,6 @@ final class TabBarCoordinator: Coordinator {
         favouriteCoordinator.start()
         
         tabBarController.viewControllers = [episodeCoordinator.navigationController, favouriteCoordinator.navigationController]
-        navigationController.pushViewController(tabBar, animated: false)
+        navigationController.pushViewController(tabBar, animated: true)
     }
 }

@@ -22,6 +22,10 @@ class LaunchCoordinator: Coordinator {
     }
     
     func start() {
+        showLaunchScreen()
+    }
+    
+    private func showLaunchScreen() {
         let launchVC = LaunchAssembly.configure(dependencies)
         guard let launchVC = launchVC as? LaunchViewController else { return }
         launchVC.handlerLaunch = { [weak self] event in
@@ -29,6 +33,6 @@ class LaunchCoordinator: Coordinator {
             case .launchCompleted: self?.finish()
             }
         }
-        navigationController.pushViewController(launchVC, animated: false)
+        navigationController.pushViewController(launchVC, animated: true)
     }
 }

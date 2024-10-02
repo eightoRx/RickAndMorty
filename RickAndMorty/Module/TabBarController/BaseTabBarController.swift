@@ -19,6 +19,9 @@ final class BaseTabBarController: UITabBarController {
         self.tabBar.backgroundColor = .white
         self.tabBar.itemPositioning = .centered
         self.tabBar.layer.borderWidth = 1
-        self.tabBar.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
+        self.tabBar.layer.borderColor = UIColor.clear.cgColor
+        tabBar.layer.shadowColor = .init(gray: 0.5, alpha: 0.5)
+        tabBar.layer.shadowOpacity = 0.3
+        tabBar.layer.shadowRadius = 3
     }
 }

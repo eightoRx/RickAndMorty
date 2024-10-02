@@ -20,12 +20,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func configureScene(_ windowScene: UIWindowScene) {
-        let rootCotroller = UINavigationController()
-        rootCotroller.setNavigationBarHidden(true, animated: false)
-        window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = rootCotroller
+        let rootController = UINavigationController()
+     
+        rootController.setNavigationBarHidden(true, animated: false)
+     window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = rootController
         window?.makeKeyAndVisible()
-        coordinator = AppCoordinator(rootCotroller, dependencies: dependencies)
+        coordinator = AppCoordinator(rootController, dependencies: dependencies)
         coordinator?.start()
     }
 }

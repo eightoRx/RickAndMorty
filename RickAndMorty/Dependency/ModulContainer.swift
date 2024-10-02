@@ -36,10 +36,10 @@ extension ModulContainer {
 extension ModulContainer {
     func getEpisodeController() -> UIViewController {
         let vc = EpisodeViewController()
-        vc.title = "Episode Title"
         vc.tabBarItem = UITabBarItem(title: nil,
-                                             image: UIImage(systemName: "house"),
-                                             selectedImage: UIImage(systemName: "house.fill"))
+                                     image: UIImage(systemName: SystemImageName.emptyHouse),
+                                     selectedImage: UIImage(systemName: SystemImageName.fillHouse))
+        
         return vc
     }
 }
@@ -50,8 +50,8 @@ extension ModulContainer {
         let vc = FavouriteViewController()
         vc.title = "Favourite Title"
         vc.tabBarItem = UITabBarItem(title: nil,
-                                             image: UIImage(systemName: "heart"),
-                                             selectedImage: UIImage(systemName: "heart.fill"))
+                                     image: UIImage(systemName: SystemImageName.emptyHeart),
+                                     selectedImage: UIImage(systemName: SystemImageName.fillHeart))
         return vc
     }
 }

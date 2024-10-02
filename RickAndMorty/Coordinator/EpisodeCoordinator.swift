@@ -20,10 +20,10 @@ class EpisodeCoordinator: Coordinator {
     }
     
    func start() {
-        showViewController()
+       showEpisodeScreen()
     }
     
-    private func showViewController() {
+    private func showEpisodeScreen() {
         let episodeVC = EpisodeAssembly.configure(dependencies)
         let detailCharacterVC = CharacterDetailAssembly.configure(dependencies)
         guard let episodeVC = episodeVC as? EpisodeViewController else {return}

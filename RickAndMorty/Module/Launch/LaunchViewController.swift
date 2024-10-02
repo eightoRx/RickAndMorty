@@ -17,14 +17,14 @@ final class LaunchViewController: UIViewController {
     
     private let logoImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "logo")
+        image.image = UIImage(named: ImageName.logoImage)
         image.contentMode = .scaleAspectFit
         return image
     }()
     
     private let loadImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "load")
+        image.image = UIImage(named: ImageName.loadImage)
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -35,12 +35,11 @@ final class LaunchViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.handlerLaunch?(.launchCompleted)
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        createAnimation(for: loadImage, duration: 3)
+        createAnimation(for: loadImage, duration: 3.5)
     }
     
     private func setupUI() {
@@ -73,4 +72,3 @@ final class LaunchViewController: UIViewController {
         CATransaction.setDisableActions(true)
     }
 }
-

@@ -30,6 +30,5 @@ extension Coordinator {
     func finish() {
         childCoordinators.removeAll()
         coordinatorFinishDelegate?.coordinatorFinishDelegate(childCoordinator: self)
-        print(childCoordinators)
     }
 }

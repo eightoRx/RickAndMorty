@@ -7,13 +7,17 @@
 
 import UIKit
 
+protocol AppCoordinatorProtocol: Coordinator {
+    func start()
+}
+
 final class AppCoordinator: AppCoordinatorProtocol {
     
     var coordinatorType: CoordinatorType { .app }
     var dependencies: IDependencies
     var coordinatorFinishDelegate: CoordinatorFinishDelegate?
     var childCoordinators = [Coordinator]()
-    var navigationController:  UINavigationController
+    var navigationController: UINavigationController
     
     init(_ navigationController: UINavigationController, dependencies: IDependencies) {
         self.dependencies = dependencies

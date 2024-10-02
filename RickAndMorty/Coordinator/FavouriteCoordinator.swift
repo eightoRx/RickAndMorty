@@ -20,10 +20,10 @@ class FavouriteCoordinator: Coordinator {
     }
     
     func start() {
-        showViewController()
+        showFavouriteScreen()
     }
     
-   private func showViewController() {
+    private func showFavouriteScreen() {
         let favouriteVC = FavouriteAssembly.configure(dependencies)
         let detailCharacterVC = CharacterDetailAssembly.configure(dependencies)
         guard let favouriteVC = favouriteVC as? FavouriteViewController else {return}
