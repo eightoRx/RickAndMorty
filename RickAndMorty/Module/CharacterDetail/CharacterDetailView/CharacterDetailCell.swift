@@ -9,7 +9,18 @@ import UIKit
 
 final class CharacterDetailCell: UITableViewCell {
     
+    
+    
     static let identifier = "CustomCell"
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let separator: UIView = {
         let view = UIView()
@@ -26,9 +37,8 @@ final class CharacterDetailCell: UITableViewCell {
         return label
     }()
     
-    func configure(with title: String) {
-        label.text = title
-        setupUI()
+    func configure(data: String) {
+        label.text = data
     }
     
     private func setupUI() {

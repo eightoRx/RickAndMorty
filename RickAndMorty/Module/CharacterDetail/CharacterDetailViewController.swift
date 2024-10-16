@@ -7,19 +7,29 @@
 
 import UIKit
 import PhotosUI
+import Combine
 
 final class CharacterDetailViewController: UIViewController {
     
-    let imagePicker = ImagePicker()
+    private var subscriptions = Set<AnyCancellable>()
     
-    let status: [NameStatus] = [
-        NameStatus(nameStatus: "Gender", statusCharacter: ["Male"]),
-        NameStatus(nameStatus: "Status", statusCharacter: ["Alive"]),
-        NameStatus(nameStatus: "Specie", statusCharacter: ["Human"]),
-        NameStatus(nameStatus: "Origin", statusCharacter: ["Earth (C-137)"]),
-        NameStatus(nameStatus: "Type", statusCharacter: ["Unknown"]),
-        NameStatus(nameStatus: "Location", statusCharacter: ["Earth (Replacement Dimension)"])
-    ]
+    var viewModel: CharacterDetailViewModelProtocol? {
+        didSet {
+            viewModel?.updateImagePicker?.delegate = self
+            viewModel?.getCharacterData()
+        }
+    }
+    
+    struct CategoryCharacter: Hashable {
+        let category: String
+        let section: Section
+    }
+    
+    private typealias UserDataSource = UITableViewDiffableDataSource<Section, CategoryCharacter>
+    private typealias CharacterSnapshot = NSDiffableDataSourceSnapshot<Section, CategoryCharacter>
+    private var dataSource: UserDataSource?
+    
+    private let headerName = ["Gender", "Status", "Species", "Origin", "Type", "Location"]
     
     private let stackView: UIStackView = {
         let stack = UIStackView()
@@ -30,7 +40,6 @@ final class CharacterDetailViewController: UIViewController {
     
     private let characterImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: ImageName.characterIcon)
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -46,7 +55,6 @@ final class CharacterDetailViewController: UIViewController {
     
     private let characterNameLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.characterNameLabel
         label.font = UIFont.theme.characterDetail.characterIconFont
         label.textColor = UIColor.theme.characterDetailNameColor
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -69,9 +77,13 @@ final class CharacterDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        tableView.dataSource = self
+        tableView.dataSource = dataSource
         tableView.delegate = self
-        imagePicker.delegate = self
+        getDataForCharacter()
+        configureImage()
+        
+        viewModel?.getCharacterData() // fix
+  
         
         cameraButton.addTarget(self, action: #selector(addTargetForAvatarButton), for: .touchUpInside)
         
@@ -108,7 +120,7 @@ final class CharacterDetailViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
+   
     // MARK: - Configure Custom Navigation Bar
     private func configureNavigationBar() {
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -128,23 +140,94 @@ final class CharacterDetailViewController: UIViewController {
     }
     
     @objc func addTargetForAvatarButton() {
-        imagePicker.showImagePicker(from: self, allowsEditing: false)
+        viewModel?.updateImagePicker?.showImagePicker(from: self, allowsEditing: false) // ?
     }
 }
 
-extension CharacterDetailViewController: UITableViewDataSource, UITableViewDelegate {
+ // MARK: - DiffableDataSource
+extension CharacterDetailViewController {
+     enum Section: Int, CaseIterable {
+        case gender, status, species, origin, type, location
+    }
+    
+    func getDataForCharacter() {
+  
+        viewModel?.iconCharacterPublisher
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] data in
+                guard let data = data else {return}
+                self?.characterImage.image = UIImage(data: data)
+            }).store(in: &subscriptions)
+        
+        
+        viewModel?.characterPublisher
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] data in
+                guard let data = data else {return}
+                    self?.makeDataSource(data: data)
+                    self?.updateDataSource(data: data)
+                    self?.characterNameLabel.text = data.name
+            }).store(in: &subscriptions)
+   }
+    
+    private func makeDataSource(data: MainDataCharacter) {
+        dataSource = UserDataSource(tableView: tableView, cellProvider: { tableView, indexPath, character in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CharacterDetailCell.identifier) as? CharacterDetailCell else {
+                fatalError("Failed to create cell")
+            }
+            let section = Section(rawValue: indexPath.section)
+
+            let type = data.type.isEmpty ? "Unknown" : data.type
+            let gender = data.gender == "unknown" ? "Unknown" : data.gender
+            let status = data.status == "unknown" ? "Unknown" : data.status
+            let specie = data.specie == "unknown" ? "Unknown" : data.specie
+            let location = data.location == "unknown" ? "Unknown" : data.location
+            let origin = data.origin == "unknown" ? "Unknown" : data.origin
+
+            switch section {
+            case .gender: cell.configure(data: gender)
+            case .status: cell.configure(data: status)
+            case .species: cell.configure(data: specie)
+            case .origin: cell.configure(data: origin)
+            case .type: cell.configure(data: type)
+            case .location: cell.configure(data: location)
+            case nil: break
+            }
+       
+            cell.selectionStyle = .none
+            return cell
+        })
+    }
+    
+    private func updateDataSource(data: MainDataCharacter) {
+        var snapshot = CharacterSnapshot()
+        snapshot.appendSections(Section.allCases)
+        
+        snapshot.appendItems([CategoryCharacter(category: data.gender, section: .gender)], toSection: .gender)
+        snapshot.appendItems([CategoryCharacter(category: data.status, section: .status)], toSection: .status)
+        snapshot.appendItems([CategoryCharacter(category: data.specie, section: .species)], toSection: .species)
+        snapshot.appendItems([CategoryCharacter(category: data.origin, section: .origin)], toSection: .origin)
+        snapshot.appendItems([CategoryCharacter(category: data.type, section: .type)], toSection: .type)
+        snapshot.appendItems([CategoryCharacter(category: data.location, section: .location)], toSection: .location)
+        
+        dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+extension CharacterDetailViewController: UITableViewDelegate {
     
     //MARK: - Header
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        status.count
+        Section.allCases.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CharacterDetailHeaderView.identifier) as?
                 CharacterDetailHeaderView else { fatalError("Failed to creat header cell") }
-        let headerTitle = status[section].nameStatus
-        header.configure(with: headerTitle)
+        
+        let headers = headerName[section]
+        header.configure(with: headers)
         return header
     }
     
@@ -155,20 +238,7 @@ extension CharacterDetailViewController: UITableViewDataSource, UITableViewDeleg
     //MARK: - Base Cell
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        status[section].statusCharacter.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CharacterDetailCell.identifier,
-                                                       for: indexPath) as? CharacterDetailCell else {
-            fatalError("Failed to create cell")
-        }
-        
-        let title = status[indexPath.section].statusCharacter[indexPath.row]
-        cell.configure(with: title)
-        cell.selectionStyle = .none
-        
-        return cell
+       1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -182,21 +252,24 @@ extension CharacterDetailViewController: ImagePickerDelegate {
         
         DispatchQueue.main.async{
             self.characterImage.image = image
-            
-            NSLayoutConstraint.activate([
-                self.characterImage.widthAnchor.constraint(equalToConstant: 147),
-                self.characterImage.heightAnchor.constraint(equalToConstant: 148),
-            ])
-            self.characterImage.contentMode = .scaleAspectFill
-            self.characterImage.layer.cornerRadius = 74
-            self.characterImage.layer.masksToBounds = true
-            self.characterImage.layer.borderColor = UIColor.theme.borderCharacterAvatar?.cgColor
-            self.characterImage.layer.borderWidth = 5
+            self.configureImage()
         }
     }
     
     func cancellButtonDidClick(on imagePicker: ImagePicker) {
         imagePicker.dismissPicker()
         imagePicker.dismissPHPicker()
+    }
+    
+    private func configureImage() {
+        NSLayoutConstraint.activate([
+            self.characterImage.widthAnchor.constraint(equalToConstant: 148),
+            self.characterImage.heightAnchor.constraint(equalToConstant: 148),
+        ])
+        self.characterImage.contentMode = .scaleAspectFill
+        self.characterImage.layer.cornerRadius = 74
+        self.characterImage.layer.masksToBounds = true
+        self.characterImage.layer.borderColor = UIColor.theme.borderCharacterAvatar?.cgColor
+        self.characterImage.layer.borderWidth = 5
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 class EpisodeCoordinator: Coordinator {
-  
+    
     var coordinatorType: CoordinatorType {.episode}
     var dependencies: IDependencies
     var navigationController = UINavigationController()
@@ -19,21 +19,19 @@ class EpisodeCoordinator: Coordinator {
         self.dependencies = dependencies
     }
     
-   func start() {
-       showEpisodeScreen()
+    func start() {
+        showEpisodeScreen()
     }
     
     private func showEpisodeScreen() {
         let episodeVC = EpisodeAssembly.configure(dependencies)
-        let detailCharacterVC = CharacterDetailAssembly.configure(dependencies)
         guard let episodeVC = episodeVC as? EpisodeViewController else {return}
-        if let detailCharacterVC = detailCharacterVC as? CharacterDetailViewController {
-            
-            episodeVC.detailHandler = { [weak self] event in
-                switch event {
-                case .moveToCharacterDetail:
-                    self?.navigationController.pushViewController(detailCharacterVC, animated: true)
-                }
+        episodeVC.detailHandler = { [weak self] event in
+            guard let self else {return}
+            switch event {
+            case .moveToCharacterDetail:
+                let detailCharacterVC = CharacterDetailAssembly.configure(self.dependencies)
+                self.navigationController.pushViewController(detailCharacterVC, animated: true)
             }
         }
         navigationController.setViewControllers([episodeVC], animated: false)

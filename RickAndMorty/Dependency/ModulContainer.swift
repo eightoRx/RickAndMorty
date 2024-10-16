@@ -36,6 +36,8 @@ extension ModulContainer {
 extension ModulContainer {
     func getEpisodeController() -> UIViewController {
         let vc = EpisodeViewController()
+        let viewModel = EpisodeViewModel(dependecies)
+        vc.viewModel = viewModel
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: UIImage(systemName: SystemImageName.emptyHouse),
                                      selectedImage: UIImage(systemName: SystemImageName.fillHouse))
@@ -48,7 +50,7 @@ extension ModulContainer {
 extension ModulContainer {
     func getFavouriteController() -> UIViewController {
         let vc = FavouriteViewController()
-        vc.title = "Favourite Title"
+        vc.title = "Favourites episodes"
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: UIImage(systemName: SystemImageName.emptyHeart),
                                      selectedImage: UIImage(systemName: SystemImageName.fillHeart))
@@ -60,6 +62,8 @@ extension ModulContainer {
 extension ModulContainer {
     func getCharacterDetailController() -> UIViewController {
         let vc = CharacterDetailViewController()
+        let viewModel = CharacterDetailViewModel(dependecies)
+        vc.viewModel = viewModel
         return vc
     }
 }

@@ -8,14 +8,21 @@
 import UIKit
 import PhotosUI
 
+protocol IImagePicker {
+    var delegate: ImagePickerDelegate? { get set }
+    func dismissPicker()
+    func dismissPHPicker()
+    func showImagePicker(from viewController: UIViewController, allowsEditing: Bool)
+}
+
 protocol ImagePickerDelegate: AnyObject {
     func imagePicker(_ imagePicker: ImagePicker, didSelect image: UIImage)
     func cancellButtonDidClick(on imagePicker: ImagePicker)
 }
 
-final class ImagePicker: NSObject {
+final class ImagePicker: NSObject, IImagePicker {
     
-    enum SwitchAlert {
+   private enum SwitchAlert {
         case camera
         case photo
     }
@@ -27,11 +34,11 @@ final class ImagePicker: NSObject {
     private weak var pHPController: PHPickerViewController?
     weak var delegate: ImagePickerDelegate?
     
-   func dismissPicker() {
+    func dismissPicker() {
         pickerController?.dismiss(animated: true)
     }
     
-   func dismissPHPicker() {
+    func dismissPHPicker() {
         pHPController?.dismiss(animated: true)
     }
     
@@ -68,21 +75,25 @@ final class ImagePicker: NSObject {
     
     
     func showImagePicker(from viewController: UIViewController, allowsEditing: Bool) {
-     
         
         // MARK: - Camera
         let optionMenu = UIAlertController(title: nil, message: Constants.titleAlertLoad, preferredStyle: .actionSheet)
         
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            let takePhotoAction = UIAlertAction(title: Constants.titleAlertCamera, style: .default) { [unowned self] _ in
+            let takePhotoAction = UIAlertAction(title: Constants.titleAlertCamera, style: .default) { [weak self] _ in
+                guard let self = self else {return}
                 AVCaptureDevice.requestAccess(for: .video) { camera in
                     DispatchQueue.main.async {
                         if camera {
-                            self.presentPickerVC(from: viewController, sourceType: .camera, allowsEditing: allowsEditing)
+                            self.presentPickerVC(from: viewController,
+                                                 sourceType: .camera,
+                                                 allowsEditing: allowsEditing)
                             
                         } else {
                             optionMenu.dismiss(animated: true) {
-                                self.customAlert(on: viewController, count: self.countCancellTapCamera, type: .camera)
+                                self.customAlert(on: viewController,
+                                                 count: self.countCancellTapCamera,
+                                                 type: .camera)
                             }
                         }
                     }
@@ -92,14 +103,17 @@ final class ImagePicker: NSObject {
         }
         
         // MARK: - Gallery
-        let takeGalleryImage = UIAlertAction(title: Constants.titleAlertGallery, style: .default) { [unowned self] _ in
+        let takeGalleryImage = UIAlertAction(title: Constants.titleAlertGallery, style: .default) { [weak self] _ in
+            guard let self = self else { return }
             checkPhotoLibraryPermission { success in
                 DispatchQueue.main.async {
                     if success {
                         self.presentPHPicker(from: viewController)
                     } else {
                         optionMenu.dismiss(animated: true) {
-                            self.customAlert(on: viewController, count: self.countCancellTapPhoto, type: .photo)
+                            self.customAlert(on: viewController,
+                                             count: self.countCancellTapPhoto,
+                                             type: .photo)
                         }
                     }
                 }
@@ -135,9 +149,7 @@ final class ImagePicker: NSObject {
     }
     
     // MARK: - Custom alert for camera and photo library
-    func customAlert(on viewController: UIViewController, count: Int, type: SwitchAlert) {
-        var countCancell = count
-        
+   private func customAlert(on viewController: UIViewController, count: Int, type: SwitchAlert) {
         let alertAccess = UIAlertController(title: type == .camera ? Constants.titleAccessCamera : Constants.titleAccessPhoto,
                                             message: type == .camera ? Constants.titleDescriptionAccessCamera : Constants.titleDescriptionAccessPhoto,
                                             preferredStyle: .alert)
@@ -151,16 +163,24 @@ final class ImagePicker: NSObject {
         })
         
         let cancelAction = UIAlertAction(title: Constants.titleAlertPhotoAndCameraCancel, style: .cancel) { _ in
-            countCancell += 1
-            if countCancell > 1 {
+            if type == .camera {
+                self.countCancellTapCamera += 1
+            } else {
+                self.countCancellTapPhoto += 1
+            }
+            
+            if self.countCancellTapCamera > 1 || self.countCancellTapPhoto > 1 {
+                self.countCancellTapPhoto = 0
+                self.countCancellTapCamera = 0
                 if let appSettings = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(appSettings, options: [:])
                 }
             }
         }
         
-        alertAccess.addAction(settingAction)
         alertAccess.addAction(cancelAction)
+        alertAccess.addAction(settingAction)
+        alertAccess.preferredAction = settingAction
         
         viewController.present(alertAccess, animated: true)
     }

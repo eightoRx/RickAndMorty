@@ -6,8 +6,21 @@
 //
 
 import UIKit
+import Combine
 
 final class EpisodeViewController: UIViewController {
+    
+    
+    
+    enum Section {
+        case main
+    }
+    
+    private typealias UserDataSource = UICollectionViewDiffableDataSource<Section, MainDataEpisode>
+    private typealias EpisodeSnapshot = NSDiffableDataSourceSnapshot<Section, MainDataEpisode>
+    private var dataSource: UserDataSource?
+  
+    var anyCancellables = Set<AnyCancellable>()
     
     enum Event {
         case moveToCharacterDetail
@@ -15,32 +28,24 @@ final class EpisodeViewController: UIViewController {
     
     var detailHandler: ((EpisodeViewController.Event) -> Void)?
     
-    let headerView = HeaderView()
+    var viewModel: EpisodeViewModelProtocol? {
+        didSet {
+            viewModel?.fetchDataForMainScreen()
+        }
+    }
     
-    lazy var episodeCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.register(EpisodeCell.self, forCellWithReuseIdentifier: .collectionIdentifiere)
-        layout.minimumLineSpacing = 52
-        collection.showsVerticalScrollIndicator = false
-        collection.backgroundColor = .clear
-        collection.layer.masksToBounds = false
-        return collection
-    }()
-    
+    private lazy var headerView = HeaderView()
+    private lazy var episodeCollectionView = BaseCollectionView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let backButton = UIBarButtonItem()
-        backButton.title = ""
-        navigationItem.backBarButtonItem = backButton
-        
         view.backgroundColor = .white
+        hideBackButtonNavBar()
         setupUI()
-        episodeCollectionView.dataSource = self
+        episodeCollectionView.dataSource = dataSource
         episodeCollectionView.delegate = self
+        makeDataSource()
+        makeDataForSnapshor()
     }
     
     private func setupUI() {
@@ -48,9 +53,9 @@ final class EpisodeViewController: UIViewController {
         view.addSubview(episodeCollectionView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
+        episodeCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            
             headerView.topAnchor.constraint(equalTo: view.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -62,29 +67,65 @@ final class EpisodeViewController: UIViewController {
             episodeCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    func makeDataForSnapshor() {
+       viewModel?.mainDataPublisher
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { data in
+                self.updateDataSource(type: data)
+            }).store(in: &anyCancellables)
+        }
+   
+    func updateDataSource(type: [MainDataEpisode]) {
+        var snapshot = EpisodeSnapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(type)
+        dataSource?.apply(snapshot, animatingDifferences: false)
+    }
+    
+    private func hideBackButtonNavBar() {
+        let backButton = UIBarButtonItem()
+        backButton.title = ""
+        navigationItem.backBarButtonItem = backButton
+    }
 }
 
+extension EpisodeViewController {
+    private func makeDataSource() {
+        dataSource = UserDataSource(collectionView: episodeCollectionView,
+                                    cellProvider: { (collection, indexPath, data) -> UICollectionViewCell? in
+            
+            guard let cell = collection.dequeueReusableCell(withReuseIdentifier: .collectionIdentifiere, for: indexPath) as? BaseCollectionViewCell else {  print("Error collectionView Cell"); return UICollectionViewCell() }
+            cell.configureCellForEpisode(data: data)
 
-extension EpisodeViewController: UICollectionViewDataSource {
+            cell.heartButtonUpdate = { self.viewModel?.updateEpisode(for: data)
+                }
+            
+          
+            return cell
+        })
+    }
+}
+
+extension EpisodeViewController {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: .collectionIdentifiere, for: indexPath) as? EpisodeCell else {  print("Error collectionView Cell"); return UICollectionViewCell() }
-        
-        return cell
+        20 // fix
     }
 }
-
 
 extension EpisodeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let mainDataEpisode = dataSource?.itemIdentifier(for: indexPath)
+        guard let mainDataEpisode else {return}
+        viewModel?.selectCharacterID(id: mainDataEpisode.characterID)
         detailHandler?(.moveToCharacterDetail)
     }
 }
-
 
 extension EpisodeViewController: UICollectionViewDelegateFlowLayout {
     

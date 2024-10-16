@@ -13,15 +13,21 @@ final class BaseTabBarController: UITabBarController {
         super.viewDidLoad()
         configureUI()
     }
-  
+    
     private func configureUI() {
-        self.tabBar.isTranslucent = true
-        self.tabBar.backgroundColor = .white
-        self.tabBar.itemPositioning = .centered
-        self.tabBar.layer.borderWidth = 1
-        self.tabBar.layer.borderColor = UIColor.clear.cgColor
-        tabBar.layer.shadowColor = .init(gray: 0.5, alpha: 0.5)
+        tabBar.isTranslucent = true
+        tabBar.backgroundColor = .white
+        tabBar.itemPositioning = .centered
+        tabBar.layer.borderWidth = 1
+        tabBar.layer.borderColor = UIColor.clear.cgColor
+        
+        tabBar.layer.shadowColor = UIColor.black.cgColor
         tabBar.layer.shadowOpacity = 0.3
         tabBar.layer.shadowRadius = 3
+        tabBar.layer.shadowOffset = CGSize(width: 0, height: 2)
+        
+        let shadowPath = UIBezierPath(roundedRect: tabBar.bounds, cornerRadius: tabBar.layer.cornerRadius)
+        tabBar.layer.shadowPath = shadowPath.cgPath
+       
     }
 }

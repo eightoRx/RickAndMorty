@@ -34,6 +34,7 @@ struct ColorTheme {
 struct FontTheme {
     let episode = EpisodeFont()
     let characterDetail = CharacterDetailFont()
+    let favourite = FavouriteFont()
 }
 
 
@@ -41,7 +42,12 @@ enum FontType: String {
     case robotoMedium = "Roboto-Medium"
     case robotoRegular = "Roboto-Regular"
     case robotoLight = "Roboto-Light"
+    case karlaMedium = "Karla-Medium"
+    case karlaSemiBold = "Karla-SemiBold"
+    case karlaBold = "Karla-Bold"
+    case karlaExtraBold = "Karla-ExtraBold"
 }
+
 
 extension FontTheme {
     struct EpisodeFont {
@@ -53,6 +59,12 @@ extension FontTheme {
 extension FontTheme {
     struct CharacterDetailFont {
         let characterIconFont = UIFont.getCustomFont(type: .robotoRegular, size: 32)
+    }
+}
+
+extension FontTheme {
+    struct FavouriteFont {
+        let navigationLabel = UIFont.getCustomFont(type: .karlaBold, size: 24)
     }
 }
 
