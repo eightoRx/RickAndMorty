@@ -48,10 +48,10 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
     }
     
     func getCharacterData() {
-        guard let characterID = userDefaultsRepository?.int(forKey: UserDefaultsKeys.myCharacter) else {
-            return}
+    
+        guard let characterID = userDefaultsRepository?.int(forKey: UserDefaultsKeys.myCharacter) else { return }
         
-        service?.fetchData(from: API.character + String(characterID))
+        service?.fetchData(from: API.baseURL + API.character + String(characterID), page: nil)
             .sink(receiveCompletion: {
                 _ in
                 print("Get detail character")
@@ -59,8 +59,7 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
                 self.character = data
                 self.getIconData(url: data.image)
             }).store(in: &anyCancellables)
-        
-        
+       
         $character
             .sink(receiveValue: { [unowned self] data in
                 guard let data else {return}
@@ -79,7 +78,6 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
     }
     
     func getIconData(url: String) {
-        
         pictureLoader?.loadPicture(url)
             .sink(receiveCompletion: {
                 _ in

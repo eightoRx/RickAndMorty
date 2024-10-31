@@ -28,6 +28,5 @@ final class BaseTabBarController: UITabBarController {
         
         let shadowPath = UIBezierPath(roundedRect: tabBar.bounds, cornerRadius: tabBar.layer.cornerRadius)
         tabBar.layer.shadowPath = shadowPath.cgPath
-       
-    }
+   }
 }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import Combine
 
 protocol UserDefaultsRepositoryProtocol {
     func set(_ object: Any?, forKey key: String)
@@ -14,6 +14,8 @@ protocol UserDefaultsRepositoryProtocol {
     
     func int(forKey key: String) -> Int?
     func remove(key: String)
+    func getFavouriteEpisode() -> AnyPublisher<[MainDataEpisode], Error>
+    func setFavourite(_ favourite: [MainDataEpisode])
 //    func string(forKey key: String) -> String?
 //    func dict(forKey key: String) -> [String: Any]?
 //    func date(forKey key: String) -> Date?
@@ -53,5 +55,32 @@ struct UserDefaultsRepository: UserDefaultsRepositoryProtocol {
     
     func remove(forKey key: String) {
         container.removeObject(forKey: key)
+    }
+    
+    func getFavouriteEpisode() -> AnyPublisher<[MainDataEpisode], Error> {
+        if let data = container.data(forKey: UserDefaultsKeys.favourite) {
+            do {
+                let favoutite = try data.decoded() as [MainDataEpisode]
+                return Just(favoutite)
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            } catch {
+                return Fail(error: error)
+                    .eraseToAnyPublisher()
+            }
+        } else {
+            print("No data in favourite userDefaults")
+            return Fail(error: NSError(domain: "NoDataError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data in favourite userDefaults"]))
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    func setFavourite(_ favourite: [MainDataEpisode]) {
+        do {
+            let data = try favourite.encoded()
+            container.set(data, forKey: UserDefaultsKeys.favourite)
+        } catch {
+            print("Encoded ERROR!!!: ", error)
+        }
     }
 }

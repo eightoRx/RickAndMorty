@@ -4,10 +4,9 @@
 //
 //  Created by Pavel Kostin on 25.09.2024.
 //
-
 import UIKit
 
-final class HeaderView: UIView {
+final class HeaderView: UIView, UISearchBarDelegate {
     
     private let logoImage: UIImageView = {
         let image = UIImageView()
@@ -95,6 +94,8 @@ final class HeaderView: UIView {
     private func configureSearchBar(_ searchBar: UISearchBar) {
         searchBar.layer.cornerRadius = 8
         searchBar.searchTextField.attributedPlaceholder = attributedTextForSearchBar
-       
+    }
+     func setSearchDelegate(_ delegate: UISearchBarDelegate) {
+        searchField.delegate = delegate
     }
 }

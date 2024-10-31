@@ -16,38 +16,38 @@ final class FavouriteViewController: UIViewController {
     
     var detailHandler: ((FavouriteViewController.Event) -> Void)?
     
-    enum Section {
-        case main
+    var viewModel: FavouriteViewModelProtocol? {
+        didSet {
+            viewModel?.getFavouriteEpisode()
+            viewModel?.getChangingDataUserDefaults()
+        }
     }
     
-    private typealias UserDataSource = UICollectionViewDiffableDataSource<Section, FavouriteModel>
-    private typealias FavouriteSnapshot = NSDiffableDataSourceSnapshot<Section, FavouriteModel>
+    private typealias UserDataSource = UICollectionViewDiffableDataSource<Section, MainDataEpisode>
+    private typealias FavouriteSnapshot = NSDiffableDataSourceSnapshot<Section, MainDataEpisode>
     private var dataSource: UserDataSource?
     var anyCancellables = Set<AnyCancellable>()
-    
-    let favouriteModel = FavouriteModel(nameSeries: Constants.nameSeries,
-                                        numberSeries: Constants.numberSeries,
-                                        nameCharacter: Constants.characterNameLabel,
-                                        image: ImageName.characterImage,
-                                        characterID: "")
-    
-    private lazy var favouriteCollectionView = BaseCollectionView()
+
+    private lazy var favouriteCollectionView = FavouriteCollectionView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupNavigationBarText()
-        
+        self.hideBackButtonNavBar()
         favouriteCollectionView.dataSource = dataSource
         favouriteCollectionView.delegate = self
         
         makeDataSource()
-        updateDataSource()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     private func setupUI() {
@@ -76,17 +76,27 @@ final class FavouriteViewController: UIViewController {
         dataSource = UserDataSource(collectionView: favouriteCollectionView,
                                     cellProvider: { (collection, indexPath, data) -> UICollectionViewCell? in
             
-            guard let cell = collection.dequeueReusableCell(withReuseIdentifier: .collectionIdentifiere, for: indexPath) as? BaseCollectionViewCell else {  print("Error collectionView Cell"); return UICollectionViewCell() }
-            cell.configureCellForFavourite(data: data)
+            guard let cell = collection.dequeueReusableCell(withReuseIdentifier: EpisodeCell.ident, for: indexPath) as? EpisodeCell else {  print("Error collectionView Cell"); return UICollectionViewCell() }
+            cell.configureCellForEpisode(data: data)
+            
+            cell.heartButtonUpdate = {
+                self.viewModel?.updateEpisode(for: data)
+            }
             return cell
         })
+        
+        viewModel?.mainDataPublisher
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { data in
+                self.updateDataSource(type: data)
+            }).store(in: &anyCancellables)
     }
     
     
-    func updateDataSource() {
+    func updateDataSource(type: [MainDataEpisode]) {
         var snapshot = FavouriteSnapshot()
-        snapshot.appendSections([.main])
-        snapshot.appendItems([favouriteModel])
+        snapshot.appendSections([.favourite])
+        snapshot.appendItems(type)
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
 }
@@ -94,12 +104,10 @@ final class FavouriteViewController: UIViewController {
 
 extension FavouriteViewController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1 // fix
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-   
+        let mainDataFavourite = dataSource?.itemIdentifier(for: indexPath)
+        guard let mainDataFavourite else {return}
+        viewModel?.selectCharacterID(id: mainDataFavourite.characterID)
         detailHandler?(.moveToCharacterDetail)
     }
 }

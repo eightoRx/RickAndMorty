@@ -1,14 +1,14 @@
 //
-//  BaseCollectionView.swift
+//  FavouriteCollectionView.swift
 //  RickAndMorty
 //
-//  Created by Pavel Kostin on 14.10.2024.
+//  Created by Pavel Kostin on 23.10.2024.
 //
 
 import Foundation
 import UIKit
 
-final class BaseCollectionView: UICollectionView {
+final class FavouriteCollectionView: UICollectionView {
     
     
         
@@ -19,7 +19,7 @@ final class BaseCollectionView: UICollectionView {
             showsVerticalScrollIndicator = false
             backgroundColor = .clear
             layer.masksToBounds = false
-            register(BaseCollectionViewCell.self, forCellWithReuseIdentifier: .collectionIdentifiere)
+            register(EpisodeCell.self, forCellWithReuseIdentifier: EpisodeCell.ident)
         }
         
         required init?(coder: NSCoder) {

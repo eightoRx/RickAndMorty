@@ -1,25 +1,24 @@
 //
-//  BaseCollectionView.swift
+//  EpisodeCollectionView.swift
 //  RickAndMorty
 //
-//  Created by Pavel Kostin on 14.10.2024.
+//  Created by Pavel Kostin on 23.10.2024.
 //
 
 import Foundation
 import UIKit
 
-final class BaseCollectionView: UICollectionView {
+
+final class EpisodeCollectionView: UICollectionView {
     
-    
-        
-        init() {
+    init() {
             let layout = UICollectionViewFlowLayout()
             super.init(frame: .zero, collectionViewLayout: layout)
             layout.minimumLineSpacing = 52
             showsVerticalScrollIndicator = false
             backgroundColor = .clear
             layer.masksToBounds = false
-            register(BaseCollectionViewCell.self, forCellWithReuseIdentifier: .collectionIdentifiere)
+        register(EpisodeCell.self, forCellWithReuseIdentifier: EpisodeCell.ident)
         }
         
         required init?(coder: NSCoder) {

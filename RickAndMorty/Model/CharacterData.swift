@@ -7,27 +7,6 @@
 
 import Foundation
 
-
-// MARK: - Character
-struct Character1: Codable, Hashable {
-
-//    let id: Int
-    let gender: String
-    let status: String
-    let specie: String
-    let type: String
-    let origin: String
-    let location: String
-//    let image: String
-    //    let episode: [String]
-    //    let url: String
-    //    let created: String
-}
-
-
-// -----------------------------------------------------------------------------
-// MARK: - Character
-
 struct CharacterResponse: Codable, Hashable {
     let info: Info
     let results: [Character]
@@ -51,6 +30,19 @@ enum Gender: String, Codable, Hashable {
     case female = "Female"
     case male = "Male"
     case unknown = "unknown"
+    case another
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let value = try container.decode(String.self)
+        
+        switch value {
+        case "Female": self = .female
+        case "Male": self = .male
+        case "unknown": self = .unknown
+        default: self = .another
+        }
+    }
 }
 
 // MARK: - Location
@@ -62,6 +54,18 @@ struct Location: Codable, Hashable {
 enum Species: String, Codable, Hashable {
     case alien = "Alien"
     case human = "Human"
+    case unknow
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let value = try container.decode(String.self)
+        
+        switch value {
+        case "Alien": self = .alien
+        case "Human": self = .human
+        default: self = .unknow
+        }
+    }
 }
 
 enum Status: String, Codable, Hashable {

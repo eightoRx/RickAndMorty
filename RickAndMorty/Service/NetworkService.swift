@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-enum DataAPIError: Error, LocalizedError {
+enum DataAPIError: Error, LocalizedError { // fix
     case urlError(URLError)
     case responseError(Int)
     case decodingError(DecodingError)
@@ -30,13 +30,13 @@ enum DataAPIError: Error, LocalizedError {
 
 
 protocol ApiServiceProtocol {
-    func fetchData<T: Codable>(from endpoint: String) -> Future<T, DataAPIError>
+    func fetchData<T: Codable>(from endpoint: String, page: String?) -> Future<T, DataAPIError>
 }
 
 final class CombineNetworkService: ApiServiceProtocol {
     
     static let shared = CombineNetworkService()
-    private let urlSession = URLSession.shared
+    private var urlSession = URLSession.shared
     private var subscription = Set<AnyCancellable>()
     
     private let jsonDecoder: JSONDecoder = {
@@ -44,12 +44,16 @@ final class CombineNetworkService: ApiServiceProtocol {
         return decoder
     }()
     
-    init() {}
+    init() {
+        let configureation = URLSessionConfiguration.default
+        configureation.timeoutIntervalForRequest = 30
+        self.urlSession = URLSession(configuration: configureation)
+    }
     
-    func fetchData<T>(from endpoint: String) -> Future<T, DataAPIError> where T : Decodable, T : Encodable {
+    func fetchData<T>(from url: String, page: String? = nil) -> Future<T, DataAPIError> where T : Decodable, T : Encodable {
         return Future<T, DataAPIError> { [unowned self] promise in
-            guard let url = URL(string: API.baseURL + endpoint) else { return }
-            
+         
+            guard let url = URL(string: url + (page ?? "")) else { return } // fix
             self.urlSession.dataTaskPublisher(for: url)
                 .tryMap { (data, response) -> Data in
                     guard let httpResponse = response as? HTTPURLResponse,

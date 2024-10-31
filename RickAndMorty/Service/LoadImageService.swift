@@ -20,7 +20,8 @@ final class PictureLoaderService: PictureLoaderProtocol {
     
     init() {
         let configureation = URLSessionConfiguration.default
-        configureation.urlCache = URLCache(memoryCapacity: 1024 * 1024 * 50, diskCapacity: 1024 * 1024 * 125)
+        configureation.urlCache = URLCache(memoryCapacity: 1024 * 1024 * 150, diskCapacity: 1024 * 1024 * 200)
+        configureation.timeoutIntervalForRequest = 30
         configureation.requestCachePolicy = .returnCacheDataElseLoad
         configureation.httpMaximumConnectionsPerHost = 7
         self.session = URLSession(configuration: configureation)

@@ -9,13 +9,14 @@ import UIKit
 
 enum API {
     static let baseURL = "https://rickandmortyapi.com/api/"
-    static let episode = "episode"
+    static let episode = "episode/?page="
     static let character = "character/"
 }
 
 
 enum UserDefaultsKeys {
     static let myCharacter = "MyCharacter"
+    static let favourite = "Favourite"
 }
 
 
@@ -55,4 +56,10 @@ enum Constants {
     static let titleDescriptionAccessPhoto = "Это необходимо для добавления ваших фотографий"
     static let titleAlertAccess = "Разрешить"
     static let titleAlertPhotoAndCameraCancel = "Отменить"
+}
+
+
+enum CoreDataConstant {
+    static let episodeContainerName = "EpisodeContainer"
+    static let episodeEntityName = "EpisodeEntity"
 }

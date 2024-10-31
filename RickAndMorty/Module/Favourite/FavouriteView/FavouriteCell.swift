@@ -1,15 +1,17 @@
 //
-//  BaseCollectionViewCell.swift
+//  FavouriteCell.swift
 //  RickAndMorty
 //
-//  Created by Pavel Kostin on 14.10.2024.
+//  Created by Pavel Kostin on 23.10.2024.
 //
 
 import Foundation
 import UIKit
 import Combine
 
-final class BaseCollectionViewCell: UICollectionViewCell {
+final class FavouriteCell: UICollectionViewCell {
+    
+    static let ident = "FavouriteCell"
 
     var heartButtonUpdate: (() -> Void)? // change to combine
     
@@ -174,13 +176,6 @@ final class BaseCollectionViewCell: UICollectionViewCell {
             heartButton.setImage(setImageForButton, for: .normal)
            }
     }
-    
-//    func configureCellForFavourite(data: FavouriteModel) {
-//        nameSeriesLabel.text = data.nameSeries
-//        numberSeriesLabel.text = data.numberSeries
-//        characterNameLabel.text = data.nameCharacter
-//        characterImage.image = UIImage(named: data.image)
-//    }
     
     @objc func buttonHeartPressed() {
         heartButtonUpdate?()

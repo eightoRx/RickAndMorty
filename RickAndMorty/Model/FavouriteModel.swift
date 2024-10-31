@@ -8,10 +8,7 @@
 import Foundation
 
 
-struct FavouriteModel: Hashable {
-    let nameSeries: String
-    let numberSeries: String
-    let nameCharacter: String
-    let image: String
-    let characterID: String
+struct FavouriteModel: Codable, Hashable {
+    let favourite: [MainDataEpisode]
 }
+

@@ -25,15 +25,13 @@ class FavouriteCoordinator: Coordinator {
     
     private func showFavouriteScreen() {
         let favouriteVC = FavouriteAssembly.configure(dependencies)
-        let detailCharacterVC = CharacterDetailAssembly.configure(dependencies)
         guard let favouriteVC = favouriteVC as? FavouriteViewController else {return}
-        if let detailCharacterVC = detailCharacterVC as? CharacterDetailViewController {
-            
             favouriteVC.detailHandler = { [weak self] event in
+                guard let self else {return}
                 switch event {
                 case .moveToCharacterDetail:
-                    self?.navigationController.pushViewController(detailCharacterVC, animated: true)
-                }
+                    let detailCharacterVC = CharacterDetailAssembly.configure(self.dependencies)
+                    self.navigationController.pushViewController(detailCharacterVC, animated: true)
             }
         }
         navigationController.setViewControllers([favouriteVC], animated: false)

@@ -50,6 +50,8 @@ extension ModulContainer {
 extension ModulContainer {
     func getFavouriteController() -> UIViewController {
         let vc = FavouriteViewController()
+        let viewModel = FavouriteViewModel(dependecies)
+        vc.viewModel = viewModel
         vc.title = "Favourites episodes"
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: UIImage(systemName: SystemImageName.emptyHeart),
