@@ -7,5 +7,13 @@
 
 import CoreData
 
-
-extension
+extension EpisodeEntity {
+    @discardableResult
+    static func make(context: NSManagedObjectContext, model: Episode) -> EpisodeEntity {
+        let entity = EpisodeEntity(context: context)
+        entity.episodeID = Int16(model.id)
+        entity.nameSeries = model.name
+        entity.numberSeries = model.episode
+        return entity
+    }
+}

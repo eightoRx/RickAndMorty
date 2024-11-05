@@ -15,18 +15,4 @@ extension UINavigationController {
         appearance.setBackIndicatorImage(image, transitionMaskImage: image)
         navigationBar.scrollEdgeAppearance = appearance
     }
-    
-//    func hideBackButtonNavBar() {
-//        let backButton = UIBarButtonItem()
-//        backButton.title = ""
-//        navigationItem.backBarButtonItem = backButton
-//    }
-}
-
-extension UIViewController {
-    func hideBackButtonNavBar() {
-        let backButton = UIBarButtonItem()
-        backButton.title = ""
-        navigationItem.backBarButtonItem = backButton
-    }
 }

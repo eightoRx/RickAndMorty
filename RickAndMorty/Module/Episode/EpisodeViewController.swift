@@ -33,7 +33,7 @@ final class EpisodeViewController: UIViewController, UISearchBarDelegate {
     }
     
     private lazy var headerView = HeaderView()
-    private lazy var episodeCollectionView = EpisodeCollectionView()
+    private lazy var episodeCollectionView = BaseCollectionView()
     private var searchController: UISearchController!
     
     override func loadView() {
@@ -63,9 +63,7 @@ final class EpisodeViewController: UIViewController, UISearchBarDelegate {
     
     private func makeSearchController() {
         searchController = UISearchController(searchResultsController: nil)
-
         headerView.setSearchDelegate(self)
-        searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
     }
     
@@ -103,7 +101,7 @@ extension EpisodeViewController {
         dataSource = UserDataSource(collectionView: episodeCollectionView,
                                     cellProvider: { (collection, indexPath, data) -> UICollectionViewCell? in
             
-            guard let cell = collection.dequeueReusableCell(withReuseIdentifier: EpisodeCell.ident, for: indexPath) as? EpisodeCell else {  print("Error collectionView Cell"); return UICollectionViewCell() }
+            guard let cell = collection.dequeueReusableCell(withReuseIdentifier: .collectionIdentifiere, for: indexPath) as? BaseCell else { return UICollectionViewCell() }
             
             cell.configureCellForEpisode(data: data)
             cell.heartButtonUpdate = {
@@ -135,7 +133,7 @@ extension EpisodeViewController: UICollectionViewDelegate {
         let height = scrollView.frame.size.height
         guard let viewModel else {return}
         
-        if position > (contentHeight - 100 - height) && !viewModel.isLoading && viewModel.canLoadMorePages {
+        if position > (contentHeight - 100 - height) && !viewModel.isLoading && viewModel.canLoadMorePages && !searchController.isActive {
             viewModel.fetchDataForMainScreen()
         }
     }
@@ -170,14 +168,6 @@ extension EpisodeViewController {
             }.store(in: &anyCancellables)
     }
 }
-
-extension EpisodeViewController: UISearchResultsUpdating { // fix ???
-    func updateSearchResults(for searchController: UISearchController) {
-        let searchText = searchController.searchBar.text
-        searchTextSubject.send(searchText)
-    }
-}
-
 
 extension EpisodeViewController {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

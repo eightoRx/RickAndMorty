@@ -13,11 +13,11 @@ struct CharacterResponse: Codable, Hashable {
 }
 
 struct Character: Codable, Hashable {
-    let id: Int // id character
-    let name: String // name character
-    let status: Status // Alive Dead or unknown
-    let species: Species // human or alien
-    let type: String // Type
+    let id: Int
+    let name: String
+    let status: Status
+    let species: Species
+    let type: String
     let gender: Gender
     let origin: Location
     let location: Location

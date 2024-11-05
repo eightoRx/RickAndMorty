@@ -13,6 +13,7 @@ protocol IDependencies {
     var apiClient: ApiServiceProtocol { get }
     var pictureLoadService: PictureLoaderProtocol { get }
     var userDefaultsRepository: UserDefaultsRepositoryProtocol { get }
+    var episodeCoreDataService: EpisodeCoreDataServiceProtocol { get }
 }
 
 
@@ -22,4 +23,5 @@ final class Dependencies: IDependencies {
     lazy var apiClient: ApiServiceProtocol = CombineNetworkService()
     lazy var pictureLoadService: PictureLoaderProtocol = PictureLoaderService()
     lazy var userDefaultsRepository: UserDefaultsRepositoryProtocol = UserDefaultsRepository(container: .standard)
+    lazy var episodeCoreDataService: EpisodeCoreDataServiceProtocol = EpisodeCoreDataService()
 }

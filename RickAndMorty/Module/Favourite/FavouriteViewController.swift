@@ -28,7 +28,7 @@ final class FavouriteViewController: UIViewController {
     private var dataSource: UserDataSource?
     var anyCancellables = Set<AnyCancellable>()
 
-    private lazy var favouriteCollectionView = FavouriteCollectionView()
+    private lazy var favouriteCollectionView = BaseCollectionView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +76,7 @@ final class FavouriteViewController: UIViewController {
         dataSource = UserDataSource(collectionView: favouriteCollectionView,
                                     cellProvider: { (collection, indexPath, data) -> UICollectionViewCell? in
             
-            guard let cell = collection.dequeueReusableCell(withReuseIdentifier: EpisodeCell.ident, for: indexPath) as? EpisodeCell else {  print("Error collectionView Cell"); return UICollectionViewCell() }
+            guard let cell = collection.dequeueReusableCell(withReuseIdentifier: .collectionIdentifiere, for: indexPath) as? BaseCell else { return UICollectionViewCell() }
             cell.configureCellForEpisode(data: data)
             
             cell.heartButtonUpdate = {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct EpisodeResponse: Codable, Hashable {
     let info: Info
@@ -24,6 +25,18 @@ struct Episode: Codable, Hashable {
     let name: String
     let episode: String
     let characters: [String]
-//    let url: String
 }
 
+// MARK: CoreData
+extension Episode {
+    init(_ entity: EpisodeEntity) {
+        id = Int(entity.episodeID)
+        name = entity.nameSeries ?? "Unkonow"
+        episode = entity.numberSeries ?? "0000"
+        if let characterEntitys = entity.characterURL as? [String] {
+            characters = characterEntitys.map { $0 }
+        } else {
+            characters = []
+        }
+    }
+}

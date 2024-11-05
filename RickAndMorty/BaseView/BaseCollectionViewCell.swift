@@ -9,12 +9,9 @@ import Foundation
 import UIKit
 import Combine
 
-final class BaseCollectionViewCell: UICollectionViewCell {
-
+final class BaseCell: UICollectionViewCell {
+    
     var heartButtonUpdate: (() -> Void)? // change to combine
-    
-    var subscriber = Set<AnyCancellable>()
-    
     var isTapped: Bool = false
     
     override init(frame: CGRect) {
@@ -26,7 +23,7 @@ final class BaseCollectionViewCell: UICollectionViewCell {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
-  
+        
     }()
     
     private let characterNameLabel: UILabel = {
@@ -113,7 +110,7 @@ final class BaseCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
- 
+        
         backgroundColor = .white
         contentView.addSubview(characterImage)
         contentView.addSubview(bottomView)
@@ -164,23 +161,12 @@ final class BaseCollectionViewCell: UICollectionViewCell {
         numberSeriesLabel.text = data.numberSeries
         characterNameLabel.text = data.nameCharacter
         characterImage.image = UIImage(data: data.image)
-       
+        
         let isFavourite = data.isFavourite
         let setImageForButton = isFavourite ? UIImage(named: ImageName.redHeartButton) : UIImage(named: ImageName.heartButton)
-
-        UIView.performWithoutAnimation {
-            heartButton.setCustomAnimate(setImageForButton, animated: true, reversed: true, color: .black)
-            
-            heartButton.setImage(setImageForButton, for: .normal)
-           }
+        heartButton.setCustomAnimate(setImageForButton, animated: true, reversed: true, color: .black)
+        heartButton.setImage(setImageForButton, for: .normal)
     }
-    
-//    func configureCellForFavourite(data: FavouriteModel) {
-//        nameSeriesLabel.text = data.nameSeries
-//        numberSeriesLabel.text = data.numberSeries
-//        characterNameLabel.text = data.nameCharacter
-//        characterImage.image = UIImage(named: data.image)
-//    }
     
     @objc func buttonHeartPressed() {
         heartButtonUpdate?()

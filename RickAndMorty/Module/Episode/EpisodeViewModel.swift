@@ -7,6 +7,7 @@
 import Combine
 import Foundation
 import UIKit
+import CoreData
 
 
 protocol EpisodeViewModelProtocol: AnyObject {
@@ -33,22 +34,13 @@ protocol EpisodeViewModelProtocol: AnyObject {
 }
 
 class EpisodeViewModel: EpisodeViewModelProtocol {
-    enum EpisodeNotifyType {
-        case update
-        case none
-        
-        func postNotification() {
-            switch self {
-            case .update: NotificationCenter.default.post(name: .episodeNotification, object: nil)
-            case .none: break
-            }
-        }
-    }
     // MARK: - Property
     private let service: ApiServiceProtocol
     private let pictureLoadService: PictureLoaderProtocol
     private let userDefaultsRepository: UserDefaultsRepositoryProtocol
+    private let episodeCoreData: EpisodeCoreDataServiceProtocol
     
+    private(set) var allowedEpisodes: [Episode] = []
     @Published private(set) var episode: [Episode] = []
     @Published private(set) var character: Character?
     @Published var mainDataEpisode: MainDataEpisodes = []
@@ -67,21 +59,28 @@ class EpisodeViewModel: EpisodeViewModelProtocol {
         self.service = depedencies.apiClient
         self.pictureLoadService = depedencies.pictureLoadService
         self.userDefaultsRepository = depedencies.userDefaultsRepository
+        self.episodeCoreData = depedencies.episodeCoreDataService
     }
     // MARK: - Load data for cells with pagination
     func fetchDataForMainScreen() {
+        
         guard !self.isLoading && self.canLoadMorePages else {return }
         isLoading = true
+        getAllAllowedEpisode()
+        
+        if !allowedEpisodes.isEmpty {
+            self.episode = allowedEpisodes
+        }
+        
         service.fetchData(from: API.baseURL + API.episode, page: String(currentPage))
         
             .sink(receiveCompletion: { [unowned self] completion in
                 self.isLoading = false
-                if currentPage == 1 {
-                    episode.removeAll()
-                }
             }, receiveValue: { [weak self] (data: EpisodeResponse) in
                 guard let self else {return}
                 
+                self.episodeCoreData.update(episode: data.results)
+                self.getAllAllowedEpisode()
                 self.episode.append(contentsOf: data.results)
                 for episode in data.results {
                     if let randomCharacterURL = episode.characters.randomElement() {
@@ -143,6 +142,21 @@ class EpisodeViewModel: EpisodeViewModelProtocol {
     func selectCharacterID(id: Int) {
         userDefaultsRepository.set(id, forKey: UserDefaultsKeys.myCharacter)
     }
+}
+
+// MARK: - Favourites
+extension EpisodeViewModel {
+    enum EpisodeNotifyType {
+        case update
+        case none
+        
+        func postNotification() {
+            switch self {
+            case .update: NotificationCenter.default.post(name: .episodeNotification, object: nil)
+            case .none: break
+            }
+        }
+    }
     // MARK: - Check favourite state episode
     func checkFavouriteEpisode() {
         userDefaultsRepository.getFavouriteEpisode()
@@ -192,7 +206,7 @@ class EpisodeViewModel: EpisodeViewModelProtocol {
     }
 }
 
-
+// MARK: - Search episodes
 extension EpisodeViewModel {
     
     func makeInput(viewDidLoadPublisher: AnyPublisher<Void, Never>,
@@ -231,21 +245,38 @@ extension EpisodeViewModel {
                 Just(()).eraseToAnyPublisher()
             }.eraseToAnyPublisher()
         
+        
         let setDataSourcePublisher: AnyPublisher<MainDataEpisodes, Never> = Publishers
             .CombineLatest($mainDataEpisode.compactMap { $0 }, $searchText)
             .flatMap { (episode: MainDataEpisodes, searchText: String?) in
                 if let searchText = searchText, !searchText.isEmpty {
-                    self.canLoadMorePages = false
+                    
                     let filtered = episode.filter { $0.numberSeries.lowercased().contains(searchText.lowercased()) }
                     return Just(filtered).eraseToAnyPublisher()
                 } else {
-                    self.canLoadMorePages = true
+                    
                     return Just(episode).eraseToAnyPublisher()
                 }
             }.eraseToAnyPublisher()
         
+        
         return .init(viewDidLoadPublisher: viewDidLoadPublisher,
                      searchTextPublisher: searchTextPublisher,
                      setDataSourcePublisher: setDataSourcePublisher)
+    }
+}
+
+extension EpisodeViewModel {
+    func getAllAllowedEpisode() {
+        episodeCoreData.fetch { [weak self] result in
+            switch result {
+            case .success(let episode):
+                if let episode = episode {
+                    self?.allowedEpisodes = episode
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

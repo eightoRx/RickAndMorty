@@ -14,8 +14,6 @@ extension UIFont {
     static let theme = FontTheme()
 }
 
-
-
 struct ColorTheme {
     let episodeCellBackgroundBottom = UIColor(named: "EpisodeBackgroundBottomCell")
     let episodeTextColor = UIColor(named: "EpisodeTextColor")
