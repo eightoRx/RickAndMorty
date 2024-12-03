@@ -9,14 +9,12 @@ import UIKit
 
 final class CharacterDetailHeaderView: UITableViewHeaderFooterView {
     
-    static let identifier = "CellHeader"
-    
     private let label: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont.getCustomFont(type: .robotoMedium, size: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Error"
+        label.text = Constants.errorLabel
         return label
     }()
     

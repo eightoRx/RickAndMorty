@@ -22,7 +22,7 @@ protocol ImagePickerDelegate: AnyObject {
 
 final class ImagePicker: NSObject, IImagePicker {
     
-   private enum SwitchAlert {
+    private enum SwitchAlert {
         case camera
         case photo
     }
@@ -149,7 +149,7 @@ final class ImagePicker: NSObject, IImagePicker {
     }
     
     // MARK: - Custom alert for camera and photo library
-   private func customAlert(on viewController: UIViewController, count: Int, type: SwitchAlert) {
+    private func customAlert(on viewController: UIViewController, count: Int, type: SwitchAlert) {
         let alertAccess = UIAlertController(title: type == .camera ? Constants.titleAccessCamera : Constants.titleAccessPhoto,
                                             message: type == .camera ? Constants.titleDescriptionAccessCamera : Constants.titleDescriptionAccessPhoto,
                                             preferredStyle: .alert)

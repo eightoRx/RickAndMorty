@@ -9,10 +9,9 @@ import Foundation
 import UIKit
 import Combine
 
-final class BaseCell: UICollectionViewCell {
+final class BaseCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     
-    var heartButtonUpdate: (() -> Void)? // change to combine
-    var isTapped: Bool = false
+    var heartButtonUpdate: (() -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,7 +80,7 @@ final class BaseCell: UICollectionViewCell {
     
     private let divinerLabel: UILabel = {
         let label = UILabel()
-        label.text = " | "
+        label.text = Constants.separator
         label.textColor = UIColor.theme.episodeGrayTextColor
         label.font = UIFont.theme.episode.bottomLabel
         return label
@@ -93,10 +92,24 @@ final class BaseCell: UICollectionViewCell {
         label.font = UIFont.theme.episode.bottomLabel
         return label
     }()
-    var count = 0
+    
+    private lazy var pan: UIPanGestureRecognizer = {
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+        pan.delegate = self
+        self.addGestureRecognizer(pan)
+        return pan
+    }()
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        if (pan.state == UIGestureRecognizer.State.changed) {
+            let p: CGPoint = pan.translation(in: self)
+            let width = self.contentView.frame.width
+            let height = self.contentView.frame.height
+            self.contentView.frame = CGRect(x: p.x, y: p.y, width: width, height: height)
+        }
+        
         layer.cornerRadius = 4
         characterImage.clipsToBounds = true
         characterImage.layer.cornerRadius = 4
@@ -156,6 +169,13 @@ final class BaseCell: UICollectionViewCell {
         ])
     }
     
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+        attributes.size.height = 357
+        return attributes
+    }
+    
+    
     func configureCellForEpisode(data: MainDataEpisode) {
         nameSeriesLabel.text = data.nameSeries.limitSimbol()
         numberSeriesLabel.text = data.numberSeries
@@ -170,5 +190,46 @@ final class BaseCell: UICollectionViewCell {
     
     @objc func buttonHeartPressed() {
         heartButtonUpdate?()
+    }
+}
+
+extension BaseCell {
+    @objc private func onPan(_ pan: UIPanGestureRecognizer) {
+        guard let collectionView = self.superview as? UICollectionView,
+              let dataSource = collectionView.dataSource as? EpisodeViewController.UserDataSource,
+              let indexPath = collectionView.indexPath(for: self) else { return }
+        
+        let translation = pan.translation(in: self)
+        let velocity = pan.velocity(in: self)
+        
+        switch pan.state {
+        case .changed:
+            if translation.x < 0 {
+                self.transform = CGAffineTransform(translationX: translation.x, y: 0)
+            }
+        case .ended:
+            if velocity.x < -500 {
+                var snapshot = dataSource.snapshot()
+                guard indexPath.item < snapshot.itemIdentifiers.count else { return }
+                let item = snapshot.itemIdentifiers[indexPath.item]
+                snapshot.deleteItems([item])
+                dataSource.apply(snapshot, animatingDifferences: true)
+            } else {
+                UIView.animate(withDuration: 0.2) {
+                    self.transform = .identity
+                    collectionView.layoutIfNeeded()
+                }
+            }
+        default:
+            break
+        }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return abs((pan.velocity(in: pan.view)).x) > abs((pan.velocity(in: pan.view)).y)
     }
 }

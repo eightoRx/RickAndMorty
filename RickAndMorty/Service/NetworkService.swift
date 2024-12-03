@@ -8,29 +8,8 @@
 import Foundation
 import Combine
 
-enum DataAPIError: Error, LocalizedError { // fix
-    case urlError(URLError)
-    case responseError(Int)
-    case decodingError(DecodingError)
-    case anyError
-    
-    var localizedDescription: String {
-        switch self {
-        case .urlError(let error):
-            return error.localizedDescription
-        case .decodingError(let error):
-            return error.localizedDescription
-        case .responseError(let error):
-            return "Bad response code: \(error)"
-        case .anyError:
-            return "Unknown error has ocurred"
-        }
-    }
-}
-
-
 protocol ApiServiceProtocol {
-    func fetchData<T: Codable>(from endpoint: String, page: String?) -> Future<T, DataAPIError>
+    func fetchData<T: Codable>(from endpoint: String, page: String?) -> Future<T, NetworkError>
 }
 
 final class CombineNetworkService: ApiServiceProtocol {
@@ -50,8 +29,8 @@ final class CombineNetworkService: ApiServiceProtocol {
         self.urlSession = URLSession(configuration: configureation)
     }
     
-    func fetchData<T>(from url: String, page: String? = nil) -> Future<T, DataAPIError> where T : Decodable, T : Encodable {
-        return Future<T, DataAPIError> { [unowned self] promise in
+    func fetchData<T>(from url: String, page: String? = nil) -> Future<T, NetworkError> where T : Decodable, T : Encodable {
+        return Future<T, NetworkError> { [unowned self] promise in
          
             guard let url = URL(string: url + (page ?? "")) else { return } // fix
             self.urlSession.dataTaskPublisher(for: url)
@@ -59,7 +38,7 @@ final class CombineNetworkService: ApiServiceProtocol {
                     guard let httpResponse = response as? HTTPURLResponse,
                           200...299 ~= httpResponse.statusCode
                     else {
-                        throw DataAPIError.responseError(
+                        throw NetworkError.responseError(
                             (response as? HTTPURLResponse)?.statusCode ?? 500)
                     }
                     return data
@@ -73,7 +52,7 @@ final class CombineNetworkService: ApiServiceProtocol {
                             promise(.failure(.urlError(urlError)))
                         case let decodingError as DecodingError:
                             promise(.failure(.decodingError(decodingError)))
-                        case let apiError as DataAPIError:
+                        case let apiError as NetworkError:
                             promise(.failure(apiError))
                         default:
                             promise(.failure(.anyError))

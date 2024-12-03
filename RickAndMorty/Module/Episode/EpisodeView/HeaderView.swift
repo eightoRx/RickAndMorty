@@ -5,8 +5,12 @@
 //  Created by Pavel Kostin on 25.09.2024.
 //
 import UIKit
+import Combine
 
 final class HeaderView: UIView, UISearchBarDelegate {
+    
+    let buttonTapped = PassthroughSubject<Void, Never>()
+    var anyCancellable: Set<AnyCancellable> = []
     
     private let logoImage: UIImageView = {
         let image = UIImageView()
@@ -31,15 +35,6 @@ final class HeaderView: UIView, UISearchBarDelegate {
         search.searchTextField.backgroundColor = .clear
         return search
     }()
-    
-    let attributedTextForFilterButton = NSAttributedString(string: "advanced filters".uppercased(), attributes: [
-        .font: UIFont.getCustomFont(type: .robotoMedium, size: 14),
-        .kern: 2
-    ])
-    
-    let attributedTextForSearchBar = NSAttributedString(string: "Name or episode (ex.S01E01)...", attributes: [
-        .font: UIFont.getCustomFont(type: .robotoRegular, size: 16),
-    ])
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,21 +76,28 @@ final class HeaderView: UIView, UISearchBarDelegate {
             filterButton.heightAnchor.constraint(equalToConstant: 56)
         ])
     }
+    
     private func configureFilterButton(_ button: UIButton) {
         button.layer.cornerRadius = 4
         button.dropShadow(radius: 1.5, offsetX: 0, offsetY: 1.5, color: .black)
-        button.setAttributedTitle(attributedTextForFilterButton, for: .normal)
+        button.setAttributedTitle(FontAttributed.theme.attributedTextForFilterButton, for: .normal)
         button.setTitleColor(UIColor.theme.episodeFilterTitleColor, for: .normal)
-        button.addLeftImage(image: UIImage(named: "filter")!, offset: 21.69)
-        button.setAttributedTitle(attributedTextForFilterButton, for: .normal)
+        button.addLeftImage(image: UIImage(named: ImageName.filterButton)!, offset: 21.69)
         button.makeSystem()
+        
+        button.addTarget(self, action: #selector(filterButtonAction), for: .touchUpInside)
     }
     
     private func configureSearchBar(_ searchBar: UISearchBar) {
         searchBar.layer.cornerRadius = 8
-        searchBar.searchTextField.attributedPlaceholder = attributedTextForSearchBar
+        searchBar.searchTextField.attributedPlaceholder = FontAttributed.theme.attributedTextForSearchBar
     }
-     func setSearchDelegate(_ delegate: UISearchBarDelegate) {
+    
+    func setSearchDelegate(_ delegate: UISearchBarDelegate) {
         searchField.delegate = delegate
+    }
+    
+    @objc func filterButtonAction() {
+        buttonTapped.send()
     }
 }

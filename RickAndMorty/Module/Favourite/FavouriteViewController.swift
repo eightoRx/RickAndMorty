@@ -18,8 +18,7 @@ final class FavouriteViewController: UIViewController {
     
     var viewModel: FavouriteViewModelProtocol? {
         didSet {
-            viewModel?.getFavouriteEpisode()
-            viewModel?.getChangingDataUserDefaults()
+            [.getFavouriteEpisode, .getChangingDataUserDefaults].forEach(perform)
         }
     }
     
@@ -32,27 +31,13 @@ final class FavouriteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        setupNavigationBarText()
-        self.hideBackButtonNavBar()
-        favouriteCollectionView.dataSource = dataSource
-        favouriteCollectionView.delegate = self
-        
-        makeDataSource()
+        [.setupUI, .setupNavBarText, .hideBackButtonNavBar, .makeDataSource].forEach(perform)
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
+
     private func setupUI() {
         view.backgroundColor = .white
-        
+        favouriteCollectionView.dataSource = dataSource
+        favouriteCollectionView.delegate = self
         view.addSubview(favouriteCollectionView)
         
         favouriteCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,12 +48,11 @@ final class FavouriteViewController: UIViewController {
             favouriteCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant:  -23),
             favouriteCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
     }
     
     private func setupNavigationBarText() {
         navigationController?.navigationBar.titleTextAttributes = [
-            .font: UIFont.theme.favourite.navigationLabel,
+            .font: UIFont.theme.favourite.navigationLabel
         ]
     }
     
@@ -80,15 +64,15 @@ final class FavouriteViewController: UIViewController {
             cell.configureCellForEpisode(data: data)
             
             cell.heartButtonUpdate = {
-                self.viewModel?.updateEpisode(for: data)
+                self.perform(.updateEpisode(episode: data))
             }
             return cell
         })
         
         viewModel?.mainDataPublisher
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { data in
-                self.updateDataSource(type: data)
+            .sink(receiveValue: { [weak self] data in
+                self?.perform(.updateDataSource(data: data))
             }).store(in: &anyCancellables)
     }
     
@@ -101,26 +85,42 @@ final class FavouriteViewController: UIViewController {
     }
 }
 
-
 extension FavouriteViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mainDataFavourite = dataSource?.itemIdentifier(for: indexPath)
         guard let mainDataFavourite else {return}
-        viewModel?.selectCharacterID(id: mainDataFavourite.characterID)
+        perform(.selectCharacterID(id: mainDataFavourite.characterID))
         detailHandler?(.moveToCharacterDetail)
     }
 }
 
-extension FavouriteViewController: UICollectionViewDelegateFlowLayout {
+// MARK: - All actions
+extension FavouriteViewController {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.bounds.width
-        let height: CGFloat = 357
-        return CGSize(width: width, height: height)
+    enum AllEpisodeAction {
+        case getFavouriteEpisode
+        case getChangingDataUserDefaults
+        case setupUI
+        case setupNavBarText
+        case hideBackButtonNavBar
+        case makeDataSource
+        case updateEpisode(episode: MainDataEpisode)
+        case updateDataSource(data: [MainDataEpisode])
+        case selectCharacterID(id: Int)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+    private func perform(_ action: AllEpisodeAction) {
+        switch action {
+        case .getFavouriteEpisode: viewModel?.getFavouriteEpisode()
+        case .getChangingDataUserDefaults: viewModel?.getChangingDataUserDefaults()
+        case .setupUI: setupUI()
+        case .setupNavBarText: setupNavigationBarText()
+        case .hideBackButtonNavBar: hideBackButtonNavBar()
+        case .makeDataSource: makeDataSource()
+        case .updateDataSource(let data): updateDataSource(type: data)
+        case .selectCharacterID(let id): viewModel?.selectCharacterID(id: id)
+        case .updateEpisode(let episode): viewModel?.updateEpisode(for: episode)
+        }
     }
 }

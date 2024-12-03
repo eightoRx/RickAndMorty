@@ -31,15 +31,12 @@ final class LaunchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.handlerLaunch?(.launchCompleted)
-        }
+        [.setupUI, .completeLaunchWithDelay].forEach(perform)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        createAnimation(for: loadImage, duration: 3.5)
+        perform(.createAnimation(image: loadImage, duration: 3.5))
     }
     
     private func setupUI() {
@@ -61,6 +58,7 @@ final class LaunchViewController: UIViewController {
         ])
     }
     
+    //MARK: - Animation
     private func createAnimation(for image: UIImageView, duration: Double) {
         let angle = CGFloat.pi * 2
         let spin = CABasicAnimation(keyPath: #keyPath(CALayer.transform))
@@ -70,5 +68,31 @@ final class LaunchViewController: UIViewController {
         spin.toValue = angle
         image.layer.add(spin, forKey: "spinAnimation")
         CATransaction.setDisableActions(true)
+    }
+    
+    private func completeLaunchWithDelay() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.handlerLaunch?(.launchCompleted)
+        }
+    }
+}
+
+//MARK: - All actions
+extension LaunchViewController {
+    
+    enum AllLaunchAction {
+        case setupUI
+        case completeLaunchWithDelay
+        case createAnimation(image: UIImageView, duration: Double)
+    }
+    
+    private func perform(_ action: AllLaunchAction) {
+        switch action {
+            
+        case .setupUI: setupUI()
+        case .completeLaunchWithDelay: completeLaunchWithDelay()
+        case .createAnimation(let image, let duration):
+            createAnimation(for: image, duration: duration)
+        }
     }
 }

@@ -13,12 +13,10 @@ enum API {
     static let character = "character/"
 }
 
-
 enum UserDefaultsKeys {
     static let myCharacter = "MyCharacter"
     static let favourite = "Favourite"
 }
-
 
 enum ImageName {
     static let logoImage = "logo"
@@ -31,6 +29,7 @@ enum ImageName {
     static let cameraIcon = "CameraIcon"
     static let characterIcon = "CharacterIcon"
     static let redHeartButton = "redHeart"
+    static let filterButton = "filter"
 }
 
 enum SystemImageName {
@@ -42,6 +41,9 @@ enum SystemImageName {
 }
 
 enum Constants {
+    static let errorLabel = "Error"
+    static let separator = " | "
+    static let favouriteScreenTitle = "Favourites episodes"
     static let characterNameLabel = "Rick Sanchez"
     static let nameSeries = "Pilot"
     static let numberSeries = "S01E01"
@@ -56,8 +58,10 @@ enum Constants {
     static let titleDescriptionAccessPhoto = "Это необходимо для добавления ваших фотографий"
     static let titleAlertAccess = "Разрешить"
     static let titleAlertPhotoAndCameraCancel = "Отменить"
+    static let numberSeriesFilterButtonTitle = "Number series"
+    static let characterFilterButtonTitle = "Characters"
+    static let nameSeriesFilterButtonTitle = "Name series"
 }
-
 
 enum CoreDataConstant {
     static let episodeContainerName = "EpisodeContainer"

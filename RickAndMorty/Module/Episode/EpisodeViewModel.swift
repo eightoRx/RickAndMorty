@@ -9,31 +9,36 @@ import Foundation
 import UIKit
 import CoreData
 
+enum FilterSearch {
+    case number
+    case character
+    case named
+}
 
 protocol EpisodeViewModelProtocol: AnyObject {
     typealias MainDataEpisodes = [MainDataEpisode]
-    var mainDataEpisode: MainDataEpisodes {get}
-    var mainDataPublished: Published<MainDataEpisodes> {get}
-    var mainDataPublisher: Published<MainDataEpisodes>.Publisher {get}
+    var mainDataEpisode: MainDataEpisodes { get }
+    var mainDataPublished: Published<MainDataEpisodes> { get }
+    var mainDataPublisher: Published<MainDataEpisodes>.Publisher { get }
     
-    var isLoading: Bool {get}
-    var canLoadMorePages: Bool {get}
-    var isFavourite: Bool {get}
+    var isLoading: Bool { get }
+    var canLoadMorePages: Bool { get }
+    var isFavourite: Bool { get }
     
     func fetchDataForMainScreen()
     func selectCharacterID(id: Int)
     func toggleFavoriteStatus(for episode: MainDataEpisode, notification: EpisodeViewModel.EpisodeNotifyType)
     func checkFavouriteEpisode()
     func updateButtonState()
+    func updateFilter(_ filter: FilterSearch)
     func getChangingDataUserDefaults()
-    
-    
     func transform(input: EpisodeViewModel.Input) -> EpisodeViewModel.Output
     func makeInput(viewDidLoadPublisher: AnyPublisher<Void, Never>,
                    searchTextPublisher: AnyPublisher<String?, Never>) -> EpisodeViewModel.Input
 }
 
 class EpisodeViewModel: EpisodeViewModelProtocol {
+    
     // MARK: - Property
     private let service: ApiServiceProtocol
     private let pictureLoadService: PictureLoaderProtocol
@@ -47,6 +52,7 @@ class EpisodeViewModel: EpisodeViewModelProtocol {
     @Published var searchText: String?
     var mainDataPublished: Published<MainDataEpisodes> { _mainDataEpisode }
     var mainDataPublisher: Published<MainDataEpisodes>.Publisher { $mainDataEpisode }
+    private var searchStatus = CurrentValueSubject<FilterSearch, Never>(.number)
     var anyCancellables = Set<AnyCancellable>()
     
     var isLoading: Bool = false
@@ -125,7 +131,7 @@ class EpisodeViewModel: EpisodeViewModelProtocol {
     
     //MARK: - Fetch Image
     private func getImage(url: String, completion: @escaping (Data) -> Void) {
-        pictureLoadService.loadPicture(url)
+        pictureLoadService.loadPicture(url, placeholder: nil)
             .sink(receiveCompletion: { [weak self] complition in
                 if case let .failure(error) = complition {
                     self?.handleError(error)
@@ -135,12 +141,28 @@ class EpisodeViewModel: EpisodeViewModelProtocol {
             }).store(in: &anyCancellables)
     }
     // MARK: - Error
-    private func handleError(_ apiError: DataAPIError) {
+    private func handleError(_ apiError: NetworkError) {
         print("ERROR: \(apiError.localizedDescription)!")
     }
     // MARK: - Character ID
     func selectCharacterID(id: Int) {
         userDefaultsRepository.set(id, forKey: UserDefaultsKeys.myCharacter)
+    }
+}
+
+// MARK: - get allowed episodes
+extension EpisodeViewModel {
+    func getAllAllowedEpisode() {
+        episodeCoreData.fetch { [weak self] result in
+            switch result {
+            case .success(let episode):
+                if let episode = episode {
+                    self?.allowedEpisodes = episode
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
@@ -209,6 +231,10 @@ extension EpisodeViewModel {
 // MARK: - Search episodes
 extension EpisodeViewModel {
     
+    func updateFilter(_ filter: FilterSearch) {
+        searchStatus.send(filter)
+    }
+    
     func makeInput(viewDidLoadPublisher: AnyPublisher<Void, Never>,
                    searchTextPublisher: AnyPublisher<String?, Never>) -> Input {
         return Input(viewDidLoadPublisher: viewDidLoadPublisher, searchTextPublisher: searchTextPublisher)
@@ -225,9 +251,8 @@ extension EpisodeViewModel {
         let setDataSourcePublisher: AnyPublisher<MainDataEpisodes, Never>
     }
     
-    
     func transform(input: Input) -> Output {
-        
+
         let viewDidLoadPublisher: AnyPublisher<Void, Never> = input
             .viewDidLoadPublisher
             .handleEvents(receiveOutput: { [weak self] _ in
@@ -247,36 +272,27 @@ extension EpisodeViewModel {
         
         
         let setDataSourcePublisher: AnyPublisher<MainDataEpisodes, Never> = Publishers
-            .CombineLatest($mainDataEpisode.compactMap { $0 }, $searchText)
-            .flatMap { (episode: MainDataEpisodes, searchText: String?) in
+            .CombineLatest3($mainDataEpisode.compactMap { $0 }, $searchText, searchStatus)
+            .flatMap { (episode: MainDataEpisodes, searchText: String?, filterType: FilterSearch) in
                 if let searchText = searchText, !searchText.isEmpty {
+                    let filterEpisode: [MainDataEpisode]
                     
-                    let filtered = episode.filter { $0.numberSeries.lowercased().contains(searchText.lowercased()) }
-                    return Just(filtered).eraseToAnyPublisher()
+                    switch filterType {
+                    case .character:
+                        filterEpisode = episode.filter { $0.nameCharacter.lowercased().contains(searchText.lowercased()) }
+                    case .named:
+                        filterEpisode = episode.filter { $0.nameSeries.lowercased().contains(searchText.lowercased()) }
+                    case .number:
+                        filterEpisode = episode.filter { $0.numberSeries.lowercased().contains(searchText.lowercased()) }
+                    }
+                    return Just(filterEpisode).eraseToAnyPublisher()
                 } else {
-                    
                     return Just(episode).eraseToAnyPublisher()
                 }
             }.eraseToAnyPublisher()
         
-        
         return .init(viewDidLoadPublisher: viewDidLoadPublisher,
                      searchTextPublisher: searchTextPublisher,
                      setDataSourcePublisher: setDataSourcePublisher)
-    }
-}
-
-extension EpisodeViewModel {
-    func getAllAllowedEpisode() {
-        episodeCoreData.fetch { [weak self] result in
-            switch result {
-            case .success(let episode):
-                if let episode = episode {
-                    self?.allowedEpisodes = episode
-                }
-            case .failure(let error):
-                print(error)
-            }
-        }
     }
 }

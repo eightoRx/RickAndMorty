@@ -10,6 +10,8 @@ import Foundation
 
 extension String {
     static let collectionIdentifiere = "collectionIdentifiere"
+    static let tableIdentifier = "CellHeader"
+    static let tableCellIdentifier = "CustomCell"
 }
 
 extension String {
@@ -20,3 +22,10 @@ extension String {
         return self
     }
 }
+
+extension String {
+    var isEmptyOrUnknown: String {
+        self.isEmpty || self.lowercased() == "unknown" ? "Unknown" : self
+    }
+}
+

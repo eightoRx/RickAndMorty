@@ -17,6 +17,7 @@ extension UIButton {
     }
 }
 
+// MARK: filter button animation
 extension UIButton{
     func makeSystem() {
         self.addTarget(self, action: #selector(handleIn), for: [
@@ -42,6 +43,7 @@ extension UIButton{
     }
 }
 
+// MARK: heart button animation
 extension UIButton {
     func setCustomAnimate(_ image: UIImage?, animated: Bool = false, reversed: Bool = false, color: UIColor) {
         guard animated else {

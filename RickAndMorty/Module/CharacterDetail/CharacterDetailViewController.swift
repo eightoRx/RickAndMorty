@@ -9,20 +9,21 @@ import UIKit
 import PhotosUI
 import Combine
 
+
 final class CharacterDetailViewController: UIViewController {
+    
+    struct CategoryCharacter: Hashable {
+        let category: String
+        let section: Section
+    }
     
     private var subscriptions = Set<AnyCancellable>()
     
     var viewModel: CharacterDetailViewModelProtocol? {
         didSet {
             viewModel?.updateImagePicker?.delegate = self
-            viewModel?.getCharacterData()
+            perform(.getCharacterData)
         }
-    }
-    
-    struct CategoryCharacter: Hashable {
-        let category: String
-        let section: Section
     }
     
     private typealias UserDataSource = UITableViewDiffableDataSource<Section, CategoryCharacter>
@@ -65,9 +66,9 @@ final class CharacterDetailViewController: UIViewController {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CharacterDetailHeaderView.self,
-                           forHeaderFooterViewReuseIdentifier: CharacterDetailHeaderView.identifier)
+                           forHeaderFooterViewReuseIdentifier: .tableIdentifier)
         tableView.register(CharacterDetailCell.self,
-                           forCellReuseIdentifier: CharacterDetailCell.identifier)
+                           forCellReuseIdentifier: .tableCellIdentifier)
         tableView.showsVerticalScrollIndicator = false
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
@@ -76,21 +77,22 @@ final class CharacterDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        [.setupUI, .getDataForCharacter, .configureImage, .tableViewConfiguration, .cameraButtonAction].forEach(perform)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        perform(.configureNavigationBar)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    private func setupUI() {
         view.backgroundColor = .white
-        tableView.dataSource = dataSource
-        tableView.delegate = self
-        getDataForCharacter()
-        configureImage()
         
-        viewModel?.getCharacterData() // fix
-  
-        
-        cameraButton.addTarget(self, action: #selector(addTargetForAvatarButton), for: .touchUpInside)
-        
-        tableView.tableHeaderView = CharacterDetailHeaderLabel(frame: CGRect(x: 0,
-                                                                             y: 0,
-                                                                             width: view.frame.width,
-                                                                             height: 10))
         view.addSubview(stackView)
         stackView.addArrangedSubview(characterImage)
         stackView.addArrangedSubview(cameraButton)
@@ -111,16 +113,20 @@ final class CharacterDetailViewController: UIViewController {
         ])
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureNavigationBar()
+    private func tableViewConfiguration() {
+        tableView.dataSource = dataSource
+        tableView.delegate = self
+        
+        tableView.tableHeaderView = CharacterDetailHeaderLabel(frame: CGRect(x: 0,
+                                                                             y: 0,
+                                                                             width: view.frame.width,
+                                                                             height: 10))
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+    private func cameraButtonAction() {
+        cameraButton.addTarget(self, action: #selector(addTargetForAvatarButton), for: .touchUpInside)
     }
-   
+    
     // MARK: - Configure Custom Navigation Bar
     private func configureNavigationBar() {
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -138,20 +144,16 @@ final class CharacterDetailViewController: UIViewController {
         navigationController?.navigationBar.layer.shadowRadius = 4
         navigationController?.navigationBar.layer.shadowOpacity = 0.4
     }
-    
-    @objc func addTargetForAvatarButton() {
-        viewModel?.updateImagePicker?.showImagePicker(from: self, allowsEditing: false) // ?
-    }
 }
 
- // MARK: - DiffableDataSource
+// MARK: - DiffableDataSource
 extension CharacterDetailViewController {
-     enum Section: Int, CaseIterable {
+    enum Section: Int, CaseIterable {
         case gender, status, species, origin, type, location
     }
     
     func getDataForCharacter() {
-  
+        
         viewModel?.iconCharacterPublisher
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] data in
@@ -164,52 +166,53 @@ extension CharacterDetailViewController {
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] data in
                 guard let data = data else {return}
-                    self?.makeDataSource(data: data)
-                    self?.updateDataSource(data: data)
-                    self?.characterNameLabel.text = data.name
+                self?.perform(.makeDataSource(data: data))
+                self?.perform(.updateDataSource(data: data))
+                self?.characterNameLabel.text = data.name
             }).store(in: &subscriptions)
-   }
+    }
     
     private func makeDataSource(data: MainDataCharacter) {
-        dataSource = UserDataSource(tableView: tableView, cellProvider: { tableView, indexPath, character in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CharacterDetailCell.identifier) as? CharacterDetailCell else {
+        dataSource = UserDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: .tableCellIdentifier) as? CharacterDetailCell else {
                 fatalError("Failed to create cell")
             }
-            let section = Section(rawValue: indexPath.section)
-
-            let type = data.type.isEmpty ? "Unknown" : data.type
-            let gender = data.gender == "unknown" ? "Unknown" : data.gender
-            let status = data.status == "unknown" ? "Unknown" : data.status
-            let specie = data.specie == "unknown" ? "Unknown" : data.specie
-            let location = data.location == "unknown" ? "Unknown" : data.location
-            let origin = data.origin == "unknown" ? "Unknown" : data.origin
-
-            switch section {
-            case .gender: cell.configure(data: gender)
-            case .status: cell.configure(data: status)
-            case .species: cell.configure(data: specie)
-            case .origin: cell.configure(data: origin)
-            case .type: cell.configure(data: type)
-            case .location: cell.configure(data: location)
-            case nil: break
-            }
-       
+            
+            let value = self.getValue(for: item.section, from: data)
+            cell.configure(data: value)
             cell.selectionStyle = .none
             return cell
         })
     }
     
+    private func createCategoryCharacters(from character: MainDataCharacter) -> [CategoryCharacter] {
+        return Section.allCases.map { section in
+            let value = getValue(for: section, from: character)
+            return CategoryCharacter(category: value, section: section)
+        }
+    }
+    
+    private func getValue(for section: Section, from character: MainDataCharacter) -> String {
+        switch section {
+        case .gender: return character.gender.isEmptyOrUnknown
+        case .status: return character.status.isEmptyOrUnknown
+        case .species: return character.specie.isEmptyOrUnknown
+        case .origin: return character.origin.isEmptyOrUnknown
+        case .type: return character.type.isEmptyOrUnknown
+        case .location: return character.location.isEmptyOrUnknown
+        }
+    }
+    
+    
     private func updateDataSource(data: MainDataCharacter) {
         var snapshot = CharacterSnapshot()
         snapshot.appendSections(Section.allCases)
+        let categorySection = createCategoryCharacters(from: data)
         
-        snapshot.appendItems([CategoryCharacter(category: data.gender, section: .gender)], toSection: .gender)
-        snapshot.appendItems([CategoryCharacter(category: data.status, section: .status)], toSection: .status)
-        snapshot.appendItems([CategoryCharacter(category: data.specie, section: .species)], toSection: .species)
-        snapshot.appendItems([CategoryCharacter(category: data.origin, section: .origin)], toSection: .origin)
-        snapshot.appendItems([CategoryCharacter(category: data.type, section: .type)], toSection: .type)
-        snapshot.appendItems([CategoryCharacter(category: data.location, section: .location)], toSection: .location)
-        
+        for section in Section.allCases {
+            let itemForSection = categorySection.filter { $0.section == section }
+            snapshot.appendItems(itemForSection, toSection: section)
+        }
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
 }
@@ -217,13 +220,8 @@ extension CharacterDetailViewController {
 extension CharacterDetailViewController: UITableViewDelegate {
     
     //MARK: - Header
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        Section.allCases.count
-    }
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CharacterDetailHeaderView.identifier) as?
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: .tableIdentifier) as?
                 CharacterDetailHeaderView else { fatalError("Failed to creat header cell") }
         
         let headers = headerName[section]
@@ -236,9 +234,8 @@ extension CharacterDetailViewController: UITableViewDelegate {
     }
     
     //MARK: - Base Cell
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       1
+        1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -271,5 +268,41 @@ extension CharacterDetailViewController: ImagePickerDelegate {
         self.characterImage.layer.masksToBounds = true
         self.characterImage.layer.borderColor = UIColor.theme.borderCharacterAvatar?.cgColor
         self.characterImage.layer.borderWidth = 5
+    }
+}
+
+extension CharacterDetailViewController {
+    @objc private func addTargetForAvatarButton() {
+        viewModel?.updateImagePicker?.showImagePicker(from: self, allowsEditing: false)
+    }
+}
+
+// MARK: - All actions
+extension CharacterDetailViewController {
+    
+    private enum AllCharacterDetailAction {
+        case getCharacterData
+        case setupUI
+        case getDataForCharacter
+        case configureImage
+        case tableViewConfiguration
+        case cameraButtonAction
+        case configureNavigationBar
+        case makeDataSource(data: MainDataCharacter)
+        case updateDataSource(data: MainDataCharacter)
+    }
+    
+    private func perform(_ action: AllCharacterDetailAction) {
+        switch action {
+        case .getCharacterData: viewModel?.getCharacterData()
+        case .setupUI: setupUI()
+        case .getDataForCharacter: getDataForCharacter()
+        case .configureImage: configureImage()
+        case .tableViewConfiguration: tableViewConfiguration()
+        case .cameraButtonAction: cameraButtonAction()
+        case .configureNavigationBar: configureNavigationBar()
+        case .makeDataSource(let data): makeDataSource(data: data)
+        case .updateDataSource(let data): updateDataSource(data: data)
+        }
     }
 }

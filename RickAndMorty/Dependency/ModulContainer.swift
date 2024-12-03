@@ -52,7 +52,7 @@ extension ModulContainer {
         let vc = FavouriteViewController()
         let viewModel = FavouriteViewModel(dependecies)
         vc.viewModel = viewModel
-        vc.title = "Favourites episodes"
+        vc.title = Constants.favouriteScreenTitle
         vc.tabBarItem = UITabBarItem(title: nil,
                                      image: UIImage(systemName: SystemImageName.emptyHeart),
                                      selectedImage: UIImage(systemName: SystemImageName.fillHeart))

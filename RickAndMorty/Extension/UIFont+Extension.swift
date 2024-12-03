@@ -10,7 +10,6 @@ import UIKit
 extension UIFont {
     static func getCustomFont(type: FontType, size: CGFloat) -> UIFont {
         .init(name: type.rawValue, size: size)!
-        // Change
     }
 }
 

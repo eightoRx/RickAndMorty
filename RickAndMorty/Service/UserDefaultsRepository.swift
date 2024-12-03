@@ -10,17 +10,10 @@ import Combine
 
 protocol UserDefaultsRepositoryProtocol {
     func set(_ object: Any?, forKey key: String)
-//    func set<T: Encodable>(object: T?, forKet key: String)
-    
     func int(forKey key: String) -> Int?
     func remove(key: String)
     func getFavouriteEpisode() -> AnyPublisher<[MainDataEpisode], Error>
     func setFavourite(_ favourite: [MainDataEpisode])
-//    func string(forKey key: String) -> String?
-//    func dict(forKey key: String) -> [String: Any]?
-//    func date(forKey key: String) -> Date?
-//    func bool(forKey key: String) -> Bool?
-//    func codableData<T: Decodable>(forKey key: String) -> T?
 }
 
 struct UserDefaultsRepository: UserDefaultsRepositoryProtocol {
@@ -69,7 +62,6 @@ struct UserDefaultsRepository: UserDefaultsRepositoryProtocol {
                     .eraseToAnyPublisher()
             }
         } else {
-            print("No data in favourite userDefaults")
             return Fail(error: NSError(domain: "NoDataError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data in favourite userDefaults"]))
                 .eraseToAnyPublisher()
         }
@@ -80,7 +72,7 @@ struct UserDefaultsRepository: UserDefaultsRepositoryProtocol {
             let data = try favourite.encoded()
             container.set(data, forKey: UserDefaultsKeys.favourite)
         } catch {
-            print("Encoded ERROR!!!: ", error)
+            print("Encoded ERROR!!!: \(error)")
         }
     }
 }

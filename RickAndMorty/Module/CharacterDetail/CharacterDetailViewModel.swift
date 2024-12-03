@@ -78,7 +78,7 @@ final class CharacterDetailViewModel: CharacterDetailViewModelProtocol {
     }
     
     func getIconData(url: String) {
-        pictureLoader?.loadPicture(url)
+        pictureLoader?.loadPicture(url, placeholder: nil)
             .sink(receiveCompletion: {
                 _ in
                 print("Get image Data")

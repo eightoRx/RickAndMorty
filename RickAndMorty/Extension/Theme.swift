@@ -13,6 +13,9 @@ extension UIColor {
 extension UIFont {
     static let theme = FontTheme()
 }
+extension FontAttributed {
+    static let theme = FontAttributed()
+}
 
 struct ColorTheme {
     let episodeCellBackgroundBottom = UIColor(named: "EpisodeBackgroundBottomCell")
@@ -35,6 +38,16 @@ struct FontTheme {
     let favourite = FavouriteFont()
 }
 
+struct FontAttributed {
+    let attributedTextForFilterButton = NSAttributedString(string: "advanced filters".uppercased(), attributes: [
+        .font: UIFont.getCustomFont(type: .robotoMedium, size: 14),
+        .kern: 2
+    ])
+    
+    let attributedTextForSearchBar = NSAttributedString(string: "Name or episode (ex.S01E01)...", attributes: [
+        .font: UIFont.getCustomFont(type: .robotoRegular, size: 16),
+    ])
+}
 
 enum FontType: String {
     case robotoMedium = "Roboto-Medium"
@@ -51,6 +64,7 @@ extension FontTheme {
     struct EpisodeFont {
         let characterNameFont = UIFont.getCustomFont(type: .robotoMedium, size: 20)
         let bottomLabel = UIFont.systemFont(ofSize: 16, weight: .regular)
+        let filterNameButton = UIFont.systemFont(ofSize: 20, weight: .regular)
     }
 }
 
